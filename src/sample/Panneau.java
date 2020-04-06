@@ -1,5 +1,7 @@
 package sample;
 
+import metavoisinage.Arrete;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -55,7 +57,7 @@ public class Panneau  extends JPanel {
             int i = r.nextInt(copyClient.size());
             Client clientActuel = copyClient.get(i);
             chargeActuelle = chargeActuelle + clientActuel.getQuantite();
-            route.addArrete(new Arrete(depot, clientActuel, getDistance(depot, clientActuel)));
+            route.addArrete(new Arrete(depot, clientActuel));
             copyClient.remove(i);
             while (chargeActuelle < chargeMax && copyClient.size() > 1) {
                 i = r.nextInt(copyClient.size());
@@ -64,7 +66,7 @@ public class Panneau  extends JPanel {
                 chargeActuelle = chargeActuelle + clientActuel.getQuantite();
                 copyClient.remove(i);
             }
-            route.addArrete(new Arrete(clientActuel, depot, getDistance(clientActuel, depot)));
+            route.addArrete(new Arrete(clientActuel, depot));
             routes.add(route);
         }
     }

@@ -1,5 +1,7 @@
 package sample;
 
+import metavoisinage.Arrete;
+
 import java.util.List;
 
 public class Route {
