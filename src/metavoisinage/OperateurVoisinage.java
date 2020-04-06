@@ -10,11 +10,17 @@ public class OperateurVoisinage {
 
     }
 
+    //TODO - faire un operateur qui supprime une route ou ajoute une route
+
     public static Solution inversePointsArretes(Solution routes) {
         int c = r.nextInt(routes.getRoutes().size());
         Route route = routes.getRoutes().get(c);
+        while (route.getArretes().size() <= 2) {
+            c = r.nextInt(routes.getRoutes().size());
+            route = routes.getRoutes().get(c);
+        }
         int i = r.nextInt(route.getArretes().size());
-        while (i <= 1 || i >= route.getArretes().size() - 2) {
+        while (i < 1 || i > route.getArretes().size() - 2) {
             i = r.nextInt(route.getArretes().size());
         }
         Client client1 = route.getArretes().get(i).getClientInitial();
@@ -31,36 +37,42 @@ public class OperateurVoisinage {
 
     public static Solution echangePointsBetweenRoutes(Solution routes) {
         int m = r.nextInt(routes.getRoutes().size() - 1);
+        while (routes.getRoutes().get(m).getArretes().size() <= 2) {
+            m = r.nextInt(routes.getRoutes().size() - 1);
+        }
         int n = r.nextInt(routes.getRoutes().size() - 1);
-        while (n == m) {
+        while (n == m || routes.getRoutes().get(n).getArretes().size() <= 2) {
             n = r.nextInt(routes.getRoutes().size() - 1);
         }
         Route route1 = routes.getRoutes().get(m);
         Route route2 = routes.getRoutes().get(n);
 
         int i = r.nextInt(route1.getArretes().size());
-        while (i <= 1 || i >= route1.getArretes().size() - 2) {
+        while (i < 1 || i > route1.getArretes().size() - 2) {
             i = r.nextInt(route1.getArretes().size());
         }
         int j = r.nextInt(route2.getArretes().size());
-        while (j <= 1 || j >= route2.getArretes().size() - 2) {
+        while (j < 1 || j > route2.getArretes().size() - 2) {
             j = r.nextInt(route2.getArretes().size());
         }
         while ((route1.getChargeTotal() + route2.getArretes().get(j).getCharge() - route1.getArretes().get(i).getCharge()) > 100 ||
                 (route2.getChargeTotal() + route1.getArretes().get(i).getCharge() - route2.getArretes().get(j).getCharge()) > 100) {
-            m = r.nextInt(routes.getRoutes().size());
-            n = r.nextInt(routes.getRoutes().size());
-            while (n == m) {
-                n = r.nextInt(routes.getRoutes().size());
+            m = r.nextInt(routes.getRoutes().size() - 1);
+            while (routes.getRoutes().get(m).getArretes().size() <= 2) {
+                m = r.nextInt(routes.getRoutes().size() - 1);
+            }
+            n = r.nextInt(routes.getRoutes().size() - 1);
+            while (n == m || routes.getRoutes().get(n).getArretes().size() <= 2) {
+                n = r.nextInt(routes.getRoutes().size() - 1);
             }
             route1 = routes.getRoutes().get(m);
             route2 = routes.getRoutes().get(n);
             i = r.nextInt(route1.getArretes().size());
-            while (i <= 1 || i >= route1.getArretes().size() - 2) {
+            while (i < 1 || i > route1.getArretes().size() - 2) {
                 i = r.nextInt(route1.getArretes().size());
             }
             j = r.nextInt(route2.getArretes().size());
-            while (j <= 1 || j >= route2.getArretes().size() - 2) {
+            while (j < 1 || j > route2.getArretes().size() - 2) {
                 j = r.nextInt(route2.getArretes().size());
             }
         }
@@ -80,12 +92,16 @@ public class OperateurVoisinage {
     public static Solution crossArreteInsideRoute(Solution routes) {
         int c = r.nextInt(routes.getRoutes().size());
         Route route = routes.getRoutes().get(c);
+        while (route.getArretes().size() <= 2) {
+            c = r.nextInt(routes.getRoutes().size());
+            route = routes.getRoutes().get(c);
+        }
         int i = r.nextInt(route.getArretes().size());
-        while (i <= 1 || i >= route.getArretes().size() - 2) {
+        while (i < 1 || i > route.getArretes().size() - 2) {
             i = r.nextInt(route.getArretes().size());
         }
         int j = r.nextInt(route.getArretes().size());
-        while (j <= 1 || j >= route.getArretes().size() - 2 || j == i || j == i + 1 || j == i - 1) {
+        while (j < 1 || j > route.getArretes().size() - 2 || j == i || j == i + 1 || j == i - 1) {
             j = r.nextInt(route.getArretes().size());
         }
         Client client1 = route.getArretes().get(i).getClientInitial();
@@ -109,34 +125,52 @@ public class OperateurVoisinage {
     }
 
     public static Solution crossArreteBetweenRoutes(Solution routes) {
-        int m = r.nextInt(routes.getRoutes().size());
-        int n = r.nextInt(routes.getRoutes().size());
-        while (n == m) {
-            n = r.nextInt(routes.getRoutes().size());
+        int m = r.nextInt(routes.getRoutes().size() - 1);
+        while (routes.getRoutes().get(m).getArretes().size() <= 2) {
+            m = r.nextInt(routes.getRoutes().size() - 1);
+        }
+        int n = r.nextInt(routes.getRoutes().size() - 1);
+        while (n == m || routes.getRoutes().get(n).getArretes().size() <= 2) {
+            n = r.nextInt(routes.getRoutes().size() - 1);
         }
         Route route1 = routes.getRoutes().get(m);
         Route route2 = routes.getRoutes().get(n);
 
         int i = r.nextInt(route1.getArretes().size());
-        while (i <= 1 || i >= route1.getArretes().size() - 2) {
+        while (i < 1 || i > route1.getArretes().size() - 2) {
             i = r.nextInt(route1.getArretes().size());
         }
         int j = r.nextInt(route2.getArretes().size());
-        while (j <= 1 || j >= route2.getArretes().size() - 2) {
+        while (j < 1 || j > route2.getArretes().size() - 2) {
             j = r.nextInt(route2.getArretes().size());
         }
-        while ((route1.getChargeTotal() + route2.getArretes().get(j - 1).getCharge() + route2.getArretes().get(j).getCharge()
-                - route1.getArretes().get(i - 1).getCharge() - route1.getArretes().get(i - 1).getCharge()) > 100 ||
-                (route2.getChargeTotal() + route1.getArretes().get(i - 1).getCharge() + route1.getArretes().get(i).getCharge()
-                        - route2.getArretes().get(j - 1).getCharge() - route2.getArretes().get(j - 1).getCharge()) > 100) {
+        double newChargeRoute1 = route1.getChargeTotal() + route2.getArretes().get(j - 1).getCharge() + route2.getArretes().get(j).getCharge()
+                - route1.getArretes().get(i - 1).getCharge() - route1.getArretes().get(i - 1).getCharge();
+        double newChargeRoute2 = route2.getChargeTotal() + route1.getArretes().get(i - 1).getCharge() + route1.getArretes().get(i).getCharge()
+                - route2.getArretes().get(j - 1).getCharge() - route2.getArretes().get(j - 1).getCharge();
+        while (newChargeRoute1 > 100 || newChargeRoute2 > 100) {
+            m = r.nextInt(routes.getRoutes().size() - 1);
+            while (routes.getRoutes().get(m).getArretes().size() <= 2) {
+                m = r.nextInt(routes.getRoutes().size() - 1);
+            }
+            n = r.nextInt(routes.getRoutes().size() - 1);
+            while (n == m || routes.getRoutes().get(n).getArretes().size() <= 2) {
+                n = r.nextInt(routes.getRoutes().size() - 1);
+            }
+            route1 = routes.getRoutes().get(m);
+            route2 = routes.getRoutes().get(n);
             i = r.nextInt(route1.getArretes().size());
-            while (i <= 1 || i >= route1.getArretes().size() - 2) {
+            while (i < 1 || i > route1.getArretes().size() - 2) {
                 i = r.nextInt(route1.getArretes().size());
             }
             j = r.nextInt(route2.getArretes().size());
-            while (j <= 1 || j >= route2.getArretes().size() - 2 || j == i || j == i + 1 || j == i - 1) {
+            while (j < 1 || j > route2.getArretes().size() - 2) {
                 j = r.nextInt(route2.getArretes().size());
             }
+            newChargeRoute1 = route1.getChargeTotal() + route2.getArretes().get(j - 1).getCharge() + route2.getArretes().get(j).getCharge()
+                    - route1.getArretes().get(i - 1).getCharge() - route1.getArretes().get(i - 1).getCharge();
+            newChargeRoute2 = route2.getChargeTotal() + route1.getArretes().get(i - 1).getCharge() + route1.getArretes().get(i).getCharge()
+                    - route2.getArretes().get(j - 1).getCharge() - route2.getArretes().get(j - 1).getCharge();
         }
         Client client1 = route1.getArretes().get(i).getClientInitial();
         Client client2 = route1.getArretes().get(i).getClientFinal();

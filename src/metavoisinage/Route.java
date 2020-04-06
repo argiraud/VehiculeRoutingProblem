@@ -1,5 +1,6 @@
 package metavoisinage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
@@ -7,6 +8,11 @@ public class Route {
 
     public Route(List<Arrete> arretes) {
         this.arretes = arretes;
+    }
+
+    public Route(Route route) {
+        arretes = new ArrayList<>(route.getArretes().size());
+        route.getArretes().forEach(a -> arretes.add(new Arrete(a)));
     }
 
     public List<Arrete> getArretes() {

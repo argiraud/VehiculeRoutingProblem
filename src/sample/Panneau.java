@@ -2,6 +2,7 @@ package sample;
 
 import metavoisinage.Arrete;
 import metavoisinage.Client;
+import metavoisinage.Route;
 
 import javax.swing.*;
 import java.awt.*;

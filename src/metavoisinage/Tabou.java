@@ -13,25 +13,30 @@ public class Tabou {
     }
 
     public Solution methodeTabou(Solution routes) {
-        List<Solution> voisins = genererVoisins(routes);
         LinkedList<Solution> tabouList = new LinkedList<>();
-        Solution meilleureSolution = null;
-        for (int i = 0; i < 100; i++) {
-            Solution minSol = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+        Solution meilleureSolution = new Solution(routes);
+        Solution precSol = new Solution(routes);
+        for (int i = 0; i < 1000; i++) {
+            List<Solution> voisins = genererVoisins(precSol);
+            Solution solActuelle = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                     .orElseThrow(NoSuchElementException::new);
-            meilleureSolution = minSol;
-            while (tabouList.stream().anyMatch(minSol::equals)) {
-                voisins.remove(minSol);
-                minSol = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+            while (tabouList.stream().anyMatch(solActuelle::equals)) {
+                voisins.remove(precSol);
+                solActuelle = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                         .orElseThrow(NoSuchElementException::new);
             }
+            if (solActuelle.getDistanceTotal() < precSol.getDistanceTotal()) {
+                tabouList.add(solActuelle);
+            }
+            precSol = solActuelle;
             if (tabouList.size() >= 2) {
                 tabouList.remove();
             }
-            if (minSol.getDistanceTotal() < meilleureSolution.getDistanceTotal()) {
-                meilleureSolution = minSol;
+            //System.out.println(precSol.getDistanceTotal());
+            //System.out.println(meilleureSolution.getDistanceTotal());
+            if (precSol.getDistanceTotal() < meilleureSolution.getDistanceTotal()) {
+                meilleureSolution = precSol;
             }
-            tabouList.add(minSol);
         }
         return meilleureSolution;
     }
@@ -40,23 +45,28 @@ public class Tabou {
         List<Solution> voisins = new ArrayList<>();
         Random r = new Random();
         Solution voisin = null;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
+            Solution s = new Solution(routes);
             int j = r.nextInt(4);
             switch (j) {
                 case 0:
-                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(routes);
+                    System.out.println("crossArreteBetweenRoutes");
+                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s);
                     break;
                 case 1:
-                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(routes);
+                    System.out.println("echangePointsBetweenRoutes");
+                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(s);
                     break;
                 case 2:
-                    voisin = OperateurVoisinage.crossArreteInsideRoute(routes);
+                    System.out.println("crossArreteInsideRoute");
+                    voisin = OperateurVoisinage.crossArreteInsideRoute(s);
                     break;
                 case 3:
-                    voisin = OperateurVoisinage.inversePointsArretes(routes);
+                    System.out.println("inversePointsArretes");
+                    voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
             }
-            if(!voisins.contains(voisin)){
+            if (!voisins.contains(voisin)) {
                 voisins.add(voisin);
             }
         }

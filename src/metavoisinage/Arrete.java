@@ -1,25 +1,28 @@
 package metavoisinage;
 
-import metavoisinage.Client;
-
 public class Arrete {
-    private metavoisinage.Client clientInitial;
-    private metavoisinage.Client clientFinal;
+    private Client clientInitial;
+    private Client clientFinal;
 
-    public Arrete(metavoisinage.Client clientInitial, metavoisinage.Client clientFinal) {
+    public Arrete(Client clientInitial, Client clientFinal) {
         this.clientInitial = clientInitial;
         this.clientFinal = clientFinal;
     }
 
-    public metavoisinage.Client getClientInitial() {
+    public Arrete(Arrete arrete) {
+        this.clientInitial = arrete.clientInitial;
+        this.clientFinal = arrete.clientFinal;
+    }
+
+    public Client getClientInitial() {
         return clientInitial;
     }
 
-    public void setClientInitial(metavoisinage.Client clientInitial) {
+    public void setClientInitial(Client clientInitial) {
         this.clientInitial = clientInitial;
     }
 
-    public metavoisinage.Client getClientFinal() {
+    public Client getClientFinal() {
         return clientFinal;
     }
 
@@ -31,7 +34,7 @@ public class Arrete {
         return Math.sqrt(Math.pow((clientFinal.getX() - clientInitial.getX()), 2) + Math.pow((clientFinal.getY() - clientInitial.getY()), 2));
     }
 
-    public int getCharge(){
+    public int getCharge() {
         return clientFinal.getQuantite();
     }
 

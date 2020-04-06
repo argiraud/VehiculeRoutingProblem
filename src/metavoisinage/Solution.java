@@ -1,5 +1,6 @@
 package metavoisinage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Solution {
@@ -7,6 +8,11 @@ public class Solution {
 
     public Solution(List<Route> routes) {
         this.routes = routes;
+    }
+
+    public Solution(Solution s) {
+        routes = new ArrayList<Route>(s.getRoutes().size());
+        s.getRoutes().forEach(route -> routes.add(new Route(route)));
     }
 
     public List<Route> getRoutes() {
@@ -24,7 +30,7 @@ public class Solution {
     @Override
     public String toString() {
         return "Solution{" +
-                "routes=" + routes + "distance=" + getDistanceTotal() +
+                "routes=" + routes.toString() + "distance=" + getDistanceTotal() +
                 '}';
     }
 }
