@@ -26,7 +26,7 @@ public class Route {
     }
 
     public double getDistanceTotal(){
-       return arretes.stream().mapToDouble(Arrete::getDistance).sum();
+        return arretes.stream().mapToDouble(Arrete::getDistance).sum();
     }
 
     public int size(){

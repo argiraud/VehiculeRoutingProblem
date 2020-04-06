@@ -13,6 +13,18 @@ public class Client {
         this.quantite = quantite;
     }
 
+
+    Client(Client c) {
+        id = c.id;
+        x = c.x;
+        y = c.y;
+        quantite = c.quantite;
+    }
+
+    public Object clone() {
+        return new Client(this.id, this.x, this.y, this.quantite);
+    }
+
     public Integer getId() {
         return id;
     }
@@ -58,4 +70,5 @@ public class Client {
                 ", quantite=" + quantite +
                 '}';
     }
+
 }
