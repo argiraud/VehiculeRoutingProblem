@@ -1,23 +1,25 @@
 package metavoisinage;
 
-public class Arrete {
-    private Client clientInitial;
-    private Client clientFinal;
+import metavoisinage.Client;
 
-    public Arrete(Client clientInitial, Client clientFinal) {
+public class Arrete {
+    private metavoisinage.Client clientInitial;
+    private metavoisinage.Client clientFinal;
+
+    public Arrete(metavoisinage.Client clientInitial, metavoisinage.Client clientFinal) {
         this.clientInitial = clientInitial;
         this.clientFinal = clientFinal;
     }
 
-    public Client getClientInitial() {
+    public metavoisinage.Client getClientInitial() {
         return clientInitial;
     }
 
-    public void setClientInitial(Client clientInitial) {
+    public void setClientInitial(metavoisinage.Client clientInitial) {
         this.clientInitial = clientInitial;
     }
 
-    public Client getClientFinal() {
+    public metavoisinage.Client getClientFinal() {
         return clientFinal;
     }
 
