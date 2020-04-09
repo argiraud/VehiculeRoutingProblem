@@ -16,6 +16,7 @@ public class RecuitSimule {
         Solution precSol = new Solution(routesInit);
         Route routeCour = meilleuresolution.getRoutes().get(0);
         double fitMin = routesInit.getDistanceTotal();
+        //System.out.printf(String.valueOf(fitMin));
         double deltaFit = 0;
         double p;
         Random r = new Random();
@@ -42,7 +43,7 @@ public class RecuitSimule {
                     }
                 }
                 }
-            k = (int) (0.5 * k);
+            temperature = (int) (0.9 * temperature);
             }
 
         return meilleuresolution;
@@ -51,20 +52,27 @@ public class RecuitSimule {
     private Solution genererVoisins(Solution routes) {
         Random r = new Random();
         Solution voisin = null;
-        int j = r.nextInt(4);
+        for (int i = 0; i < 10000; i++) {
+            Solution s = new Solution(routes);
+            int j = r.nextInt(4);
             switch (j) {
                 case 0:
-                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(routes);
+                    //System.out.println("crossArreteBetweenRoutes");
+                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s);
                     break;
                 case 1:
-                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(routes);
+                    //System.out.println("echangePointsBetweenRoutes");
+                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(s);
                     break;
+                //case 2:
+                //    System.out.println("crossArreteInsideRoute");
+                //    voisin = OperateurVoisinage.crossArreteInsideRoute(s);
+                //    break;
                 case 2:
-                    voisin = OperateurVoisinage.crossArreteInsideRoute(routes);
+                    //System.out.println("inversePointsArretes");
+                    voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
-                case 3:
-                    voisin = OperateurVoisinage.inversePointsArretes(routes);
-                    break;
+            }
         }
         return voisin;
     }

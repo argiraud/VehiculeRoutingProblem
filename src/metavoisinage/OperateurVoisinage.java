@@ -96,14 +96,20 @@ public class OperateurVoisinage {
             c = r.nextInt(routes.getRoutes().size());
             route = routes.getRoutes().get(c);
         }
+        System.out.println("test1");
         int i = r.nextInt(route.getArretes().size());
         while (i < 1 || i > route.getArretes().size() - 2) {
             i = r.nextInt(route.getArretes().size());
         }
+        System.out.println("test2");
         int j = r.nextInt(route.getArretes().size());
+        System.out.println("test2.1");
         while (j < 1 || j > route.getArretes().size() - 2 || j == i || j == i + 1 || j == i - 1) {
+            System.out.println("test2.2");
             j = r.nextInt(route.getArretes().size());
+            System.out.println("test2.3");
         }
+        System.out.println("test3");
         Client client1 = route.getArretes().get(i).getClientInitial();
         Client client2 = route.getArretes().get(i).getClientFinal();
         Client client3 = route.getArretes().get(j).getClientInitial();
@@ -111,15 +117,18 @@ public class OperateurVoisinage {
 
         route.getArretes().get(i - 1).setClientFinal(client3);
         route.getArretes().get(i + 1).setClientInitial(client4);
+        System.out.println("test4");
 
         route.getArretes().get(j - 1).setClientFinal(client1);
         route.getArretes().get(j + 1).setClientInitial(client2);
 
         route.getArretes().get(i).setClientInitial(client3);
         route.getArretes().get(i).setClientFinal(client4);
+        System.out.println("test5");
 
         route.getArretes().get(j).setClientInitial(client1);
         route.getArretes().get(j).setClientFinal(client2);
+        System.out.println("test6");
 
         return routes;
     }

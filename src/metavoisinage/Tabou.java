@@ -16,7 +16,7 @@ public class Tabou {
         LinkedList<Solution> tabouList = new LinkedList<>();
         Solution meilleureSolution = new Solution(routes);
         Solution precSol = new Solution(routes);
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             List<Solution> voisins = genererVoisins(precSol);
             Solution solActuelle = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                     .orElseThrow(NoSuchElementException::new);
@@ -50,19 +50,19 @@ public class Tabou {
             int j = r.nextInt(4);
             switch (j) {
                 case 0:
-                    System.out.println("crossArreteBetweenRoutes");
+                    //System.out.println("crossArreteBetweenRoutes");
                     voisin = OperateurVoisinage.crossArreteBetweenRoutes(s);
                     break;
                 case 1:
-                    System.out.println("echangePointsBetweenRoutes");
+                    //System.out.println("echangePointsBetweenRoutes");
                     voisin = OperateurVoisinage.echangePointsBetweenRoutes(s);
                     break;
                 case 2:
-                    System.out.println("crossArreteInsideRoute");
+                    //System.out.println("crossArreteInsideRoute");
                     voisin = OperateurVoisinage.crossArreteInsideRoute(s);
                     break;
                 case 3:
-                    System.out.println("inversePointsArretes");
+                    //System.out.println("inversePointsArretes");
                     voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
             }
