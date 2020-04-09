@@ -11,6 +11,8 @@ public class OperateurVoisinage {
     }
 
     //TODO - faire un operateur qui supprime une route ou ajoute une route
+    //TODO - Erreur poids dans inversePointArretes
+    //TODO - Erreur boucle infini troisème
 
     public static Solution inversePointsArretes(Solution routes) {
         int c = r.nextInt(routes.getRoutes().size());
@@ -31,6 +33,7 @@ public class OperateurVoisinage {
 
         route.getArretes().get(i).setClientInitial(client2);
         route.getArretes().get(i).setClientFinal(client1);
+
 
         return routes;
     }
@@ -84,6 +87,9 @@ public class OperateurVoisinage {
 
         route2.getArretes().get(j).setClientFinal(client1);
         route2.getArretes().get(j + 1).setClientInitial(client1);
+
+        //System.out.println(route1.getChargeTotal() + route2.getArretes().get(j).getCharge() - route1.getArretes().get(i).getCharge() );
+        //System.out.println(route2.getChargeTotal() + route1.getArretes().get(i).getCharge() - route2.getArretes().get(j).getCharge());
 
         return routes;
     }
@@ -197,6 +203,9 @@ public class OperateurVoisinage {
 
         route2.getArretes().get(j).setClientInitial(client1);
         route2.getArretes().get(j).setClientFinal(client2);
+
+        //System.out.println(newChargeRoute1);
+        //System.out.println(newChargeRoute2);
 
         return routes;
     }

@@ -43,10 +43,10 @@ public class Main extends Application {
         RecuitSimule rs = new RecuitSimule();
 
         //Tabou
-        //routes = tabou.methodeTabou(routes);
+        routes = tabou.methodeTabou(routes);
 
         //Recuit Simulé
-        routes = rs.MethodeRecuit(routes, 100);
+        //routes = rs.MethodeRecuit(routes, 100);
         //OperateurVoisinage.echangePointsBetweenRoutes(routes);
         System.out.println("final " + routes);
     }
