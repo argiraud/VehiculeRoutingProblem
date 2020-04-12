@@ -1,8 +1,6 @@
 package metavoisinage;
 
-import com.sun.deploy.security.SelectableSecurityManager;
-
-import java.util.*;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RecuitSimule {
@@ -11,7 +9,7 @@ public class RecuitSimule {
 
     }
 
-    public Solution MethodeRecuit(Solution routesInit, Integer temperature ) {
+    public Solution MethodeRecuit(Solution routesInit, Integer temperature, Integer chargeMax) {
         Solution meilleuresolution = new Solution(routesInit);
         Solution precSol = new Solution(routesInit);
         Route routeCour = meilleuresolution.getRoutes().get(0);
@@ -21,35 +19,34 @@ public class RecuitSimule {
         double p;
         Random r = new Random();
         for (int k = 0; k < temperature; k++) {
-            for(int l = 1; l < temperature; l++){
-                Solution randsolution = genererVoisins(precSol);
+            for (int l = 1; l < temperature; l++) {
+                Solution randsolution = genererVoisins(precSol, chargeMax);
                 int j = r.nextInt(randsolution.getRoutes().size());
 
                 deltaFit = precSol.getDistanceTotal() - randsolution.getDistanceTotal();
-                if (deltaFit <= 0){
+                if (deltaFit <= 0) {
                     precSol = randsolution;
-                    if (precSol.getDistanceTotal() < fitMin){
+                    if (precSol.getDistanceTotal() < fitMin) {
                         meilleuresolution = randsolution;
                         fitMin = meilleuresolution.getDistanceTotal();
                     }
-                } else
-                {
+                } else {
                     p = ThreadLocalRandom.current().nextDouble(0, 1);
-                    if (p < Math.exp((deltaFit/temperature))) {
+                    if (p < Math.exp((deltaFit / temperature))) {
                         meilleuresolution = randsolution;
                         precSol = randsolution;
-                    }else {
+                    } else {
                         meilleuresolution = precSol;
                     }
                 }
-                }
-            temperature = (int) (0.9 * temperature);
             }
+            temperature = (int) (0.9 * temperature);
+        }
 
         return meilleuresolution;
     }
 
-    private Solution genererVoisins(Solution routes) {
+    private Solution genererVoisins(Solution routes, Integer chargeMax) {
         Random r = new Random();
         Solution voisin = null;
         for (int i = 0; i < 10000; i++) {
@@ -58,11 +55,11 @@ public class RecuitSimule {
             switch (j) {
                 case 0:
                     //System.out.println("crossArreteBetweenRoutes");
-                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s);
+                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
                     break;
                 case 1:
                     //System.out.println("echangePointsBetweenRoutes");
-                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(s);
+                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(s, chargeMax);
                     break;
                 //case 2:
                 //    System.out.println("crossArreteInsideRoute");

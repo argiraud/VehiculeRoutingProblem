@@ -4,13 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     private List<Arrete> arretes;
 
-    public Route(List<Arrete> arretes) {
+    public Route(Integer id,List<Arrete> arretes) {
+        this.id = id;
         this.arretes = arretes;
     }
 
     public Route(Route route) {
+        this.id = route.getId();
         arretes = new ArrayList<>(route.getArretes().size());
         route.getArretes().forEach(a -> arretes.add(new Arrete(a)));
     }

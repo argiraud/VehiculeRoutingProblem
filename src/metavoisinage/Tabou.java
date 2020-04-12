@@ -12,12 +12,12 @@ public class Tabou {
     public Tabou() {
     }
 
-    public Solution methodeTabou(Solution routes) {
+    public Solution methodeTabou(Solution routes, Integer chargeMax) {
         LinkedList<Solution> tabouList = new LinkedList<>();
         Solution meilleureSolution = new Solution(routes);
         Solution precSol = new Solution(routes);
-        for (int i = 0; i < 10; i++) {
-            List<Solution> voisins = genererVoisins(precSol);
+        for (int i = 0; i < 3; i++) {
+            List<Solution> voisins = genererVoisins(precSol, chargeMax);
             Solution solActuelle = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                     .orElseThrow(NoSuchElementException::new);
             while (tabouList.stream().anyMatch(solActuelle::equals)) {
@@ -41,28 +41,28 @@ public class Tabou {
         return meilleureSolution;
     }
 
-    private List<Solution> genererVoisins(Solution routes) {
+    private List<Solution> genererVoisins(Solution routes, Integer chargeMax) {
         List<Solution> voisins = new ArrayList<>();
         Random r = new Random();
         Solution voisin = null;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 2; i++) {
             Solution s = new Solution(routes);
             int j = r.nextInt(4);
             switch (j) {
                 case 0:
-                    //System.out.println("crossArreteBetweenRoutes");
-                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s);
+                    System.out.println("crossArreteBetweenRoutes");
+                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
                     break;
                 case 1:
-                    //System.out.println("echangePointsBetweenRoutes");
-                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(s);
+                    System.out.println("echangePointsBetweenRoutes");
+                    voisin = OperateurVoisinage.echangePointsBetweenRoutes(s, chargeMax);
                     break;
                 case 2:
-                    //System.out.println("crossArreteInsideRoute");
+                    System.out.println("crossArreteInsideRoute");
                     voisin = OperateurVoisinage.crossArreteInsideRoute(s);
                     break;
                 case 3:
-                    //System.out.println("inversePointsArretes");
+                    System.out.println("inversePointsArretes");
                     voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
             }

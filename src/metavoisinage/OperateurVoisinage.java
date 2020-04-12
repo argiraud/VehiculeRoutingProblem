@@ -38,7 +38,7 @@ public class OperateurVoisinage {
         return routes;
     }
 
-    public static Solution echangePointsBetweenRoutes(Solution routes) {
+    public static Solution echangePointsBetweenRoutes(Solution routes, Integer chargeMax) {
         int m = r.nextInt(routes.getRoutes().size() - 1);
         while (routes.getRoutes().get(m).getArretes().size() <= 2) {
             m = r.nextInt(routes.getRoutes().size() - 1);
@@ -58,8 +58,8 @@ public class OperateurVoisinage {
         while (j < 1 || j > route2.getArretes().size() - 2) {
             j = r.nextInt(route2.getArretes().size());
         }
-        while ((route1.getChargeTotal() + route2.getArretes().get(j).getCharge() - route1.getArretes().get(i).getCharge()) > 100 ||
-                (route2.getChargeTotal() + route1.getArretes().get(i).getCharge() - route2.getArretes().get(j).getCharge()) > 100) {
+        while ((route1.getChargeTotal() + route2.getArretes().get(j).getCharge() - route1.getArretes().get(i).getCharge()) > chargeMax ||
+                (route2.getChargeTotal() + route1.getArretes().get(i).getCharge() - route2.getArretes().get(j).getCharge()) > chargeMax) {
             m = r.nextInt(routes.getRoutes().size() - 1);
             while (routes.getRoutes().get(m).getArretes().size() <= 2) {
                 m = r.nextInt(routes.getRoutes().size() - 1);
@@ -139,7 +139,7 @@ public class OperateurVoisinage {
         return routes;
     }
 
-    public static Solution crossArreteBetweenRoutes(Solution routes) {
+    public static Solution crossArreteBetweenRoutes(Solution routes, Integer chargeMax) {
         int m = r.nextInt(routes.getRoutes().size() - 1);
         while (routes.getRoutes().get(m).getArretes().size() <= 2) {
             m = r.nextInt(routes.getRoutes().size() - 1);
@@ -163,7 +163,7 @@ public class OperateurVoisinage {
                 - route1.getArretes().get(i - 1).getCharge() - route1.getArretes().get(i - 1).getCharge();
         double newChargeRoute2 = route2.getChargeTotal() + route1.getArretes().get(i - 1).getCharge() + route1.getArretes().get(i).getCharge()
                 - route2.getArretes().get(j - 1).getCharge() - route2.getArretes().get(j - 1).getCharge();
-        while (newChargeRoute1 > 100 || newChargeRoute2 > 100) {
+        while (newChargeRoute1 > chargeMax || newChargeRoute2 > chargeMax) {
             m = r.nextInt(routes.getRoutes().size() - 1);
             while (routes.getRoutes().get(m).getArretes().size() <= 2) {
                 m = r.nextInt(routes.getRoutes().size() - 1);
