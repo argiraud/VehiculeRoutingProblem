@@ -1,6 +1,8 @@
 package affichage;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,10 +41,14 @@ public class MainControler {
     @FXML
     TextField chargeMaxField;
 
+    @FXML
+    Slider temperatureSlid;
+
     Solution routes;
     List<Color> colors;
 
     Integer chargeMax = 100;
+    Integer temperature = 100;
 
     @FXML
     public void initialize() throws IOException {
@@ -53,6 +59,14 @@ public class MainControler {
             filesList.add(file);
         }
         chargeMaxField.setText("100");
+        temperatureSlid.setMin(100);
+        temperatureSlid.setMax(1000);
+        temperatureSlid.setValue(100);
+        temperatureSlid.setShowTickLabels(true);
+        temperatureSlid.setShowTickMarks(true);
+        temperatureSlid.setMajorTickUnit(100);
+        temperatureSlid.setMinorTickCount(100);
+        temperatureSlid.setBlockIncrement(100);
         ObservableList<String> filesObs = FXCollections.observableArrayList();
         filesObs.addAll(filesList);
         fichiers.setItems(filesObs);
@@ -63,6 +77,13 @@ public class MainControler {
                 chargeMax = Integer.valueOf(oldValue);
             }
             System.out.println(chargeMax);
+        });
+
+        temperatureSlid.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                temperature = new_val.intValue();
+            }
         });
 
         algobtn.getItems().forEach(i -> i.setOnAction(a -> algobtn.setText(i.getText())));
@@ -82,7 +103,7 @@ public class MainControler {
                 break;
             case "Recuit":
                 RecuitSimule rs = new RecuitSimule();
-                routes = rs.MethodeRecuit(routes, 100, chargeMax);
+                routes = rs.MethodeRecuit(routes, temperature, chargeMax);
                 break;
             default:
                 break;
@@ -163,6 +184,23 @@ public class MainControler {
             });
         });
 
+    }
+
+    public void affichageComponent() throws IOException
+    {
+        switch (algobtn.getText()) {
+            case "Tabou":
+                temperatureSlid.setVisible(false);
+                break;
+            case "Recuit":
+                temperatureSlid.setVisible(true);
+                break;
+            case "Selectionner un algo" :
+                temperatureSlid.setVisible(false);
+                break;
+            default:
+                break;
+        }
     }
 
 

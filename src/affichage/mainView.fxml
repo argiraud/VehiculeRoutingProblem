@@ -22,9 +22,11 @@
     <children>
         <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnSpan="4" GridPane.rowIndex="0" GridPane.rowSpan="3">
          <children>
-              <TextField fx:id="chargeMaxField" layoutX="285.0" layoutY="42.0" />
-              <Label layoutX="317.0" layoutY="25.0" text="Charge Maximale" />
-              <MenuButton fx:id="algobtn" layoutX="55.0" layoutY="42.0" mnemonicParsing="false" text="selectionnez un Algo">
+              <TextField fx:id="chargeMaxField" layoutX="245.0" layoutY="42.0" />
+              <Label layoutX="275.0" layoutY="25.0" text="Charge Maximale" />
+              <Slider fx:id="temperatureSlid" layoutX="400" layoutY="42.0" />
+              <Label layoutX="420.0" layoutY="25.0" text="Temperature" />
+              <MenuButton fx:id="algobtn" layoutX="55.0" layoutY="42.0" mnemonicParsing="false" onAction="#affichageComponent" text="Selectionnez un algo" >
                   <items>
                       <MenuItem mnemonicParsing="false" text="Tabou" />
                       <MenuItem mnemonicParsing="false" text="Recuit" />

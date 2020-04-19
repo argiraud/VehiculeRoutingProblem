@@ -23,7 +23,7 @@ public class RecuitSimule {
                 Solution randsolution = genererVoisins(precSol, chargeMax);
                 int j = r.nextInt(randsolution.getRoutes().size());
 
-                deltaFit = precSol.getDistanceTotal() - randsolution.getDistanceTotal();
+                deltaFit = randsolution.getDistanceTotal() - precSol.getDistanceTotal();
                 if (deltaFit <= 0) {
                     precSol = randsolution;
                     if (precSol.getDistanceTotal() < fitMin) {
@@ -32,7 +32,8 @@ public class RecuitSimule {
                     }
                 } else {
                     p = ThreadLocalRandom.current().nextDouble(0, 1);
-                    if (p < Math.exp((deltaFit / temperature))) {
+                    double t =  Math.exp((-deltaFit) / temperature);
+                    if (p < t) {
                         meilleuresolution = randsolution;
                         precSol = randsolution;
                     } else {
@@ -51,11 +52,11 @@ public class RecuitSimule {
         Solution voisin = null;
         for (int i = 0; i < 10000; i++) {
             Solution s = new Solution(routes);
-            int j = r.nextInt(4);
+            int j = r.nextInt(1);
             switch (j) {
-                case 0:
+                case 4:
                     //System.out.println("crossArreteBetweenRoutes");
-                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
+                    //voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
                     break;
                 case 1:
                     //System.out.println("echangePointsBetweenRoutes");
@@ -65,7 +66,7 @@ public class RecuitSimule {
                 //    System.out.println("crossArreteInsideRoute");
                 //    voisin = OperateurVoisinage.crossArreteInsideRoute(s);
                 //    break;
-                case 2:
+                case 0:
                     //System.out.println("inversePointsArretes");
                     voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
