@@ -16,7 +16,7 @@ public class Tabou {
         LinkedList<Solution> tabouList = new LinkedList<>();
         Solution meilleureSolution = new Solution(routes);
         Solution precSol = new Solution(routes);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             List<Solution> voisins = genererVoisins(precSol, chargeMax);
             Solution solActuelle = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                     .orElseThrow(NoSuchElementException::new);
@@ -32,8 +32,6 @@ public class Tabou {
             if (tabouList.size() >= 2) {
                 tabouList.remove();
             }
-            //System.out.println(precSol.getDistanceTotal());
-            //System.out.println(meilleureSolution.getDistanceTotal());
             if (precSol.getDistanceTotal() < meilleureSolution.getDistanceTotal()) {
                 meilleureSolution = precSol;
             }
@@ -45,7 +43,7 @@ public class Tabou {
         List<Solution> voisins = new ArrayList<>();
         Random r = new Random();
         Solution voisin = null;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1000; i++) {
             Solution s = new Solution(routes);
             int j = r.nextInt(4);
             switch (j) {

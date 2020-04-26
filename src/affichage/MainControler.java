@@ -158,7 +158,6 @@ public class MainControler {
         colors.add(Color.LIME);
 
         solution.getRoutes().forEach(route -> {
-            System.out.println(route.getId());
             Color color = colors.get(route.getId());
             route.getArretes().forEach(a -> {
                 gc.beginPath();

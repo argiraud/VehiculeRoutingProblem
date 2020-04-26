@@ -34,7 +34,6 @@ public class OperateurVoisinage {
         route.getArretes().get(i).setClientInitial(client2);
         route.getArretes().get(i).setClientFinal(client1);
 
-
         return routes;
     }
 
@@ -88,17 +87,13 @@ public class OperateurVoisinage {
         route2.getArretes().get(j).setClientFinal(client1);
         route2.getArretes().get(j + 1).setClientInitial(client1);
 
-        //System.out.println(route1.getChargeTotal() + route2.getArretes().get(j).getCharge() - route1.getArretes().get(i).getCharge() );
-        //System.out.println(route2.getChargeTotal() + route1.getArretes().get(i).getCharge() - route2.getArretes().get(j).getCharge());
-
         return routes;
     }
-
 
     public static Solution crossArreteInsideRoute(Solution routes) {
         int c = r.nextInt(routes.getRoutes().size());
         Route route = routes.getRoutes().get(c);
-        while (route.getArretes().size() <= 2) {
+        while (route.getArretes().size() <= 5) {
             c = r.nextInt(routes.getRoutes().size());
             route = routes.getRoutes().get(c);
         }
@@ -112,7 +107,7 @@ public class OperateurVoisinage {
         System.out.println("test2.1");
         while (j < 1 || j > route.getArretes().size() - 2 || j == i || j == i + 1 || j == i - 1) {
             System.out.println("test2.2");
-            j = r.nextInt(route.getArretes().size());
+            System.out.println(routes);
             System.out.println("test2.3");
         }
         System.out.println("test3");
@@ -203,9 +198,6 @@ public class OperateurVoisinage {
 
         route2.getArretes().get(j).setClientInitial(client1);
         route2.getArretes().get(j).setClientFinal(client2);
-
-        //System.out.println(newChargeRoute1);
-        //System.out.println(newChargeRoute2);
 
         return routes;
     }
