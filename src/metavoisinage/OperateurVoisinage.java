@@ -107,7 +107,7 @@ public class OperateurVoisinage {
         System.out.println("test2.1");
         while (j < 1 || j > route.getArretes().size() - 2 || j == i || j == i + 1 || j == i - 1) {
             System.out.println("test2.2");
-            System.out.println(routes);
+            j = r.nextInt(route.getArretes().size());
             System.out.println("test2.3");
         }
         System.out.println("test3");
