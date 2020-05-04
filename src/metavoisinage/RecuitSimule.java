@@ -9,7 +9,7 @@ public class RecuitSimule {
 
     }
 
-    public Solution MethodeRecuit(Solution routesInit, Integer temperature, Integer chargeMax) {
+    public Solution MethodeRecuit(Solution routesInit, Integer temperature, Integer chargeMax, Integer opVois) {
         Solution meilleuresolution = new Solution(routesInit);
         Solution precSol = new Solution(routesInit);
         Route routeCour = meilleuresolution.getRoutes().get(0);
@@ -20,7 +20,7 @@ public class RecuitSimule {
         Random r = new Random();
         for (int k = 0; k < temperature; k++) {
             for (int l = 1; l < temperature; l++) {
-                Solution randsolution = genererVoisins(precSol, chargeMax);
+                Solution randsolution = genererVoisins(precSol, chargeMax, opVois);
                 int j = r.nextInt(randsolution.getRoutes().size());
 
                 deltaFit = randsolution.getDistanceTotal() - precSol.getDistanceTotal();
@@ -41,21 +41,20 @@ public class RecuitSimule {
                     }
                 }
             }
-            temperature = (int) (0.9 * temperature);
+            temperature = (int) (0.9 * temperature); //0.9 correspond au mu
         }
 
         return meilleuresolution;
     }
 
-    private Solution genererVoisins(Solution routes, Integer chargeMax) {
+    private Solution genererVoisins(Solution routes, Integer chargeMax, Integer opVois) {
         Random r = new Random();
         Solution voisin = null;
         for (int i = 0; i < 100; i++) {
             Solution s = new Solution(routes);
-            voisin = OperateurVoisinage.enleverUnPoint(s, chargeMax);
-            /**int j = r.nextInt(3);
+            int j = opVois;
             switch (j) {
-                case 3:
+                case 0:
                     //System.out.println("crossArreteBetweenRoutes");
                     voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
                     break;
@@ -67,11 +66,14 @@ public class RecuitSimule {
                 //    System.out.println("crossArreteInsideRoute");
                     voisin = OperateurVoisinage.crossArreteInsideRoute(s);
                     break;
-                case 0:
+                case 3:
                     //System.out.println("inversePointsArretes");
                     voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
-            }**/
+                case 4:
+                    System.out.println("enleverUnPoint");
+                    voisin = OperateurVoisinage.enleverUnPoint(s, chargeMax);
+            }
         }
         return voisin;
     }

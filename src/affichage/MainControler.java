@@ -27,6 +27,9 @@ public class MainControler {
     MenuButton algobtn;
 
     @FXML
+    MenuButton opvoisbtn;
+
+    @FXML
     Button charger;
 
     @FXML
@@ -87,6 +90,7 @@ public class MainControler {
         });
 
         algobtn.getItems().forEach(i -> i.setOnAction(a -> algobtn.setText(i.getText())));
+        opvoisbtn.getItems().forEach(i -> i.setOnAction(a -> opvoisbtn.setText(i.getText())));
         routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"), chargeMax);
         distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));
         nbVehicule.setText("Nombre de véhicule: " + String.valueOf(Math.round(routes.getRoutes().size())));
@@ -99,15 +103,56 @@ public class MainControler {
         switch (algobtn.getText()) {
             case "Tabou":
                 Tabou tabou = new Tabou();
-                routes = tabou.methodeTabou(routes, chargeMax);
+                switch(opvoisbtn.getText()) {
+                    case "Cross Exchange between route" :
+                        routes = tabou.methodeTabou(routes, chargeMax, 0);
+                        break;
+                    case "Exchange Operator" :
+                        routes = tabou.methodeTabou(routes, chargeMax, 1);
+                        break;
+                    case "Cross Exchange inside route" :
+                        routes = tabou.methodeTabou(routes, chargeMax, 2);
+                        break;
+                    case "Inverse Points Arretes" :
+                        routes = tabou.methodeTabou(routes, chargeMax, 3);
+                        break;
+                    case "Enlever un point" :
+                        routes = tabou.methodeTabou(routes, chargeMax, 4);
+                        break;
+                    default:
+                        break;
+                }
+
                 break;
             case "Recuit":
                 RecuitSimule rs = new RecuitSimule();
-                routes = rs.MethodeRecuit(routes, temperature, chargeMax);
+                switch(opvoisbtn.getText()) {
+                    case "Cross Exchange between route" :
+                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 0);
+                        break;
+                    case "Exchange Operator" :
+                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 1);
+                        break;
+                    case "Cross Exchange inside route" :
+                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 2);
+                        break;
+                    case "Inverse Points Arretes" :
+                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 3);
+                        break;
+                    case "Enlever un point" :
+                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 4);
+                        break;
+                    default:
+                        break;
+                }
+
                 break;
             default:
                 break;
+
         }
+
+
 
         eraseall();
         generateDraw(routes);

@@ -12,12 +12,12 @@ public class Tabou {
     public Tabou() {
     }
 
-    public Solution methodeTabou(Solution routes, Integer chargeMax) {
+    public Solution methodeTabou(Solution routes, Integer chargeMax, Integer opVois) {
         LinkedList<Solution> tabouList = new LinkedList<>();
         Solution meilleureSolution = new Solution(routes);
         Solution precSol = new Solution(routes);
         for (int i = 0; i < 100; i++) {
-            List<Solution> voisins = genererVoisins(precSol, chargeMax);
+            List<Solution> voisins = genererVoisins(precSol, chargeMax, opVois);
             Solution solActuelle = voisins.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                     .orElseThrow(NoSuchElementException::new);
             while (tabouList.stream().anyMatch(solActuelle::equals)) {
@@ -39,13 +39,13 @@ public class Tabou {
         return meilleureSolution;
     }
 
-    private List<Solution> genererVoisins(Solution routes, Integer chargeMax) {
+    private List<Solution> genererVoisins(Solution routes, Integer chargeMax, Integer opVois) {
         List<Solution> voisins = new ArrayList<>();
         Random r = new Random();
         Solution voisin = null;
         for (int i = 0; i < 100000; i++) {
             Solution s = new Solution(routes);
-            int j = r.nextInt(5);
+            int j = opVois;
             switch (j) {
                 case 0:
                     System.out.println("crossArreteBetweenRoutes");
