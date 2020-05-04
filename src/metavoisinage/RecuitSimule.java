@@ -50,27 +50,28 @@ public class RecuitSimule {
     private Solution genererVoisins(Solution routes, Integer chargeMax) {
         Random r = new Random();
         Solution voisin = null;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100; i++) {
             Solution s = new Solution(routes);
-            int j = r.nextInt(1);
+            voisin = OperateurVoisinage.enleverUnPoint(s, chargeMax);
+            /**int j = r.nextInt(3);
             switch (j) {
-                case 4:
+                case 3:
                     //System.out.println("crossArreteBetweenRoutes");
-                    //voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
+                    voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
                     break;
                 case 1:
                     //System.out.println("echangePointsBetweenRoutes");
                     voisin = OperateurVoisinage.echangePointsBetweenRoutes(s, chargeMax);
                     break;
-                //case 2:
+                case 2:
                 //    System.out.println("crossArreteInsideRoute");
-                //    voisin = OperateurVoisinage.crossArreteInsideRoute(s);
-                //    break;
+                    voisin = OperateurVoisinage.crossArreteInsideRoute(s);
+                    break;
                 case 0:
                     //System.out.println("inversePointsArretes");
                     voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
-            }
+            }**/
         }
         return voisin;
     }

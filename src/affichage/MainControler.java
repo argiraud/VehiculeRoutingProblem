@@ -223,6 +223,7 @@ public class MainControler {
     private static Solution routesCreation(ArrayList<Client> clients, int chargeMax) throws IOException {
         Solution routes = new Solution(new ArrayList<>());
         Random r = new Random();
+        int nbVille = r.nextInt(4) + 3;;
         Client depot = clients.get(0);
         clients.remove(0);
         int nbRoute = 0;
@@ -234,7 +235,7 @@ public class MainControler {
             chargeActuelle = chargeActuelle + clientActuel.getQuantite();
             route.addArrete(new Arrete(depot, clientActuel));
             clients.remove(i);
-            while (chargeActuelle < chargeMax && clients.size() > 1) {
+            while (chargeActuelle < chargeMax && clients.size() > 1 && route.getArretes().size() < nbVille ) {
                 i = r.nextInt(clients.size());
                 if (chargeActuelle + clients.get(i).getQuantite() <= chargeMax) {
                     route.addArrete(new Arrete(clientActuel, clients.get(i)));
