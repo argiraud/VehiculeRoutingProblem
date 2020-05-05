@@ -22,26 +22,28 @@
     <children>
         <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnSpan="4" GridPane.rowIndex="0" GridPane.rowSpan="3">
          <children>
-              <TextField fx:id="chargeMaxField" layoutX="245.0" layoutY="42.0" />
-              <Label layoutX="275.0" layoutY="25.0" text="Charge Maximale" />
-              <Slider fx:id="temperatureSlid" layoutX="400" layoutY="42.0" />
-              <Label layoutX="420.0" layoutY="25.0" text="Temperature" />
-              <MenuButton fx:id="algobtn" layoutX="52.0" layoutY="69.0" mnemonicParsing="false" onAction="#affichageComponent" text="Selectionnez un algo">
+              <Slider fx:id="temperatureSlid" visible="false" layoutX="420" layoutY="42.0" />
+             <TextField fx:id="nbVoisinsField" visible="false" layoutX="260.0" layoutY="30.0" maxWidth="115"/>
+             <TextField fx:id="nbExecutionField" visible="false" layoutX="400.0" layoutY="30.0" maxWidth="115"/>
+             <Label fx:id="nbVoisinsLabel" layoutX="260.0" layoutY="10.0" visible="false" text="Nb voisins" />
+             <Label fx:id="nbExecutionLabel" layoutX="400.0" layoutY="10.0" visible="false" text="Nb executions" />
+             <Label fx:id="temperatureLabel" layoutX="420.0" layoutY="25.0" visible="false" text="Temperature" />
+              <MenuButton fx:id="algobtn" layoutX="52.0" layoutY="69.0" mnemonicParsing="false" text="Selectionnez un algo">
                   <items>
-                      <MenuItem mnemonicParsing="false" text="Tabou" />
-                      <MenuItem mnemonicParsing="false" text="Recuit" />
+                      <MenuItem fx:id="tabou" mnemonicParsing="false" text="Tabou"/>
+                      <MenuItem fx:id="recuit" mnemonicParsing="false" text="Recuit" />
                   </items>
               </MenuButton>
-             <MenuButton fx:id="opvoisbtn" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" onAction="#affichageComponent" prefHeight="25.0" prefWidth="217.0" text="Selectionnez un opérateur de voisinage">
+             <MenuButton fx:id="opvoisbtn" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="217.0" text="Selectionnez un opérateur de voisinage">
                  <items>
-                     <MenuItem mnemonicParsing="false" text="Cross Exchange inside route" />
+                     <MenuItem mnemonicParsing="false" text="Cross Exchange inside route"/>
                      <MenuItem mnemonicParsing="false" text="Cross Exchange between route" />
                      <MenuItem mnemonicParsing="false" text="Exchange Operator" />
                      <MenuItem mnemonicParsing="false" text="Enlever un point" />
                      <MenuItem mnemonicParsing="false" text="Inverse Points Arretes" />
                  </items>
              </MenuButton>
-              <Button layoutX="332.0" layoutY="82.0" onAction="#executer" text="Executer" />
+              <Button layoutX="332.0" layoutY="75.0" onAction="#executer" text="Executer" />
          </children></Pane>
         <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="5">
          <children>

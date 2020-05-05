@@ -42,26 +42,47 @@ public class MainControler {
     javafx.scene.canvas.Canvas canvas;
 
     @FXML
-    TextField chargeMaxField;
+    Slider temperatureSlid;
 
     @FXML
-    Slider temperatureSlid;
+    TextField nbVoisinsField;
+
+    @FXML
+    TextField nbExecutionField;
+
+    @FXML
+    Label temperatureLabel;
+
+    @FXML
+    Label nbVoisinsLabel;
+
+    @FXML
+    Label nbExecutionLabel;
+
+    @FXML
+    MenuItem tabou;
+
+    @FXML
+    MenuItem recuit;
 
     Solution routes;
     List<Color> colors;
 
-    Integer chargeMax = 100;
+    public static final Integer CHARGE_MAX = 100;
     Integer temperature = 100;
+    Random rand;
+    Integer nbVoisins = 10000;
+    Integer nbExecutions = 10;
 
     @FXML
     public void initialize() throws IOException {
+        rand = new Random();
         File repertoire = new File("./Ressources");
         String[] files = repertoire.list();
         List<String> filesList = new ArrayList<>();
         for (String file : files) {
             filesList.add(file);
         }
-        chargeMaxField.setText("100");
         temperatureSlid.setMin(100);
         temperatureSlid.setMax(1000);
         temperatureSlid.setValue(100);
@@ -73,51 +94,76 @@ public class MainControler {
         ObservableList<String> filesObs = FXCollections.observableArrayList();
         filesObs.addAll(filesList);
         fichiers.setItems(filesObs);
-        chargeMaxField.textProperty().addListener((v, oldValue, newValue) -> {
+        nbVoisinsField.textProperty().addListener((v, oldValue, newValue) -> {
             try {
-                chargeMax = Integer.valueOf(newValue);
+                nbVoisins = Integer.valueOf(newValue);
             } catch (Exception e) {
-                chargeMax = Integer.valueOf(oldValue);
+                nbVoisins = Integer.valueOf(oldValue);
             }
-            System.out.println(chargeMax);
         });
-
+        nbExecutionField.textProperty().addListener((v, oldValue, newValue) -> {
+            try {
+                nbExecutions = Integer.valueOf(newValue);
+            } catch (Exception e) {
+                nbExecutions = Integer.valueOf(oldValue);
+            }
+        });
         temperatureSlid.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number old_val, Number new_val) {
                 temperature = new_val.intValue();
             }
         });
-
+        nbVoisinsField.setText(nbVoisins.toString());
+        nbExecutionField.setText(nbExecutions.toString());
         algobtn.getItems().forEach(i -> i.setOnAction(a -> algobtn.setText(i.getText())));
         opvoisbtn.getItems().forEach(i -> i.setOnAction(a -> opvoisbtn.setText(i.getText())));
-        routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"), chargeMax);
+        routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"), CHARGE_MAX);
         distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));
         nbVehicule.setText("Nombre de véhicule: " + String.valueOf(Math.round(routes.getRoutes().size())));
 
         generateDraw(routes);
 
+        tabou.setOnAction(event -> {
+            algobtn.setText(tabou.getText());
+            temperatureSlid.setVisible(false);
+            temperatureLabel.setVisible(false);
+            nbExecutionField.setVisible(true);
+            nbExecutionLabel.setVisible(true);
+            nbVoisinsField.setVisible(true);
+            nbVoisinsLabel.setVisible(true);
+        });
+
+        recuit.setOnAction(event -> {
+            algobtn.setText(recuit.getText());
+            temperatureSlid.setVisible(true);
+            temperatureLabel.setVisible(true);
+            nbExecutionField.setVisible(false);
+            nbExecutionLabel.setVisible(false);
+            nbVoisinsLabel.setVisible(false);
+            nbVoisinsField.setVisible(false);
+        });
     }
 
     public void executer() {
         switch (algobtn.getText()) {
             case "Tabou":
                 Tabou tabou = new Tabou();
-                switch(opvoisbtn.getText()) {
-                    case "Cross Exchange between route" :
-                        routes = tabou.methodeTabou(routes, chargeMax, 0);
+                switch (opvoisbtn.getText()) {
+                    case "Cross Exchange between route":
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 0, nbVoisins, nbExecutions);
                         break;
-                    case "Exchange Operator" :
-                        routes = tabou.methodeTabou(routes, chargeMax, 1);
+                    case "Exchange Operator":
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 1, nbVoisins, nbExecutions);
                         break;
-                    case "Cross Exchange inside route" :
-                        routes = tabou.methodeTabou(routes, chargeMax, 2);
+                    case "Cross Exchange inside route":
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 2, nbVoisins, nbExecutions);
                         break;
-                    case "Inverse Points Arretes" :
-                        routes = tabou.methodeTabou(routes, chargeMax, 3);
+                    case "Inverse Points Arretes":
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 3, nbVoisins, nbExecutions);
                         break;
-                    case "Enlever un point" :
-                        routes = tabou.methodeTabou(routes, chargeMax, 4);
+                    case "Enlever un point":
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 4, nbVoisins, nbExecutions);
                         break;
                     default:
                         break;
@@ -126,21 +172,21 @@ public class MainControler {
                 break;
             case "Recuit":
                 RecuitSimule rs = new RecuitSimule();
-                switch(opvoisbtn.getText()) {
-                    case "Cross Exchange between route" :
-                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 0);
+                switch (opvoisbtn.getText()) {
+                    case "Cross Exchange between route":
+                        routes = rs.MethodeRecuit(routes, temperature, CHARGE_MAX, 0);
                         break;
-                    case "Exchange Operator" :
-                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 1);
+                    case "Exchange Operator":
+                        routes = rs.MethodeRecuit(routes, temperature, CHARGE_MAX, 1);
                         break;
-                    case "Cross Exchange inside route" :
-                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 2);
+                    case "Cross Exchange inside route":
+                        routes = rs.MethodeRecuit(routes, temperature, CHARGE_MAX, 2);
                         break;
-                    case "Inverse Points Arretes" :
-                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 3);
+                    case "Inverse Points Arretes":
+                        routes = rs.MethodeRecuit(routes, temperature, CHARGE_MAX, 3);
                         break;
-                    case "Enlever un point" :
-                        routes = rs.MethodeRecuit(routes, temperature, chargeMax, 4);
+                    case "Enlever un point":
+                        routes = rs.MethodeRecuit(routes, temperature, CHARGE_MAX, 4);
                         break;
                     default:
                         break;
@@ -153,7 +199,6 @@ public class MainControler {
         }
 
 
-
         eraseall();
         generateDraw(routes);
         distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));
@@ -163,7 +208,7 @@ public class MainControler {
 
     public void charger() throws IOException {
         MultipleSelectionModel<String> selected = fichiers.getSelectionModel();
-        routes = routesCreation(dataFileToCLientList("Ressources/" + selected.getSelectedItem()), chargeMax);
+        routes = routesCreation(dataFileToCLientList("Ressources/" + selected.getSelectedItem()), CHARGE_MAX);
         distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));
         nbVehicule.setText("Nombre de véhicule: " + String.valueOf(Math.round(routes.getRoutes().size())));
         eraseall();
@@ -182,28 +227,8 @@ public class MainControler {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         gc.setLineWidth(1.0);
-        colors = new ArrayList<>();
-        colors.add(Color.BROWN);
-        colors.add(Color.GREEN);
-        colors.add(Color.ORANGE);
-        colors.add(Color.VIOLET);
-        colors.add(Color.BLACK);
-        colors.add(Color.LIME);
-        colors.add(Color.BROWN);
-        colors.add(Color.GREEN);
-        colors.add(Color.ORANGE);
-        colors.add(Color.VIOLET);
-        colors.add(Color.BLACK);
-        colors.add(Color.LIME);
-        colors.add(Color.BROWN);
-        colors.add(Color.GREEN);
-        colors.add(Color.ORANGE);
-        colors.add(Color.VIOLET);
-        colors.add(Color.BLACK);
-        colors.add(Color.LIME);
 
         solution.getRoutes().forEach(route -> {
-            Color color = colors.get(route.getId());
             route.getArretes().forEach(a -> {
                 gc.beginPath();
                 gc.setFill(Color.BLUE);
@@ -221,7 +246,7 @@ public class MainControler {
                     gc.setFill(Color.BLUE);
                     gc.fillOval(a.getClientFinal().getX() * 5, a.getClientFinal().getY() * 5, 5, 5);
                 }
-                gc.setStroke(color);
+                gc.setStroke(generateColor());
                 gc.moveTo(a.getClientInitial().getX() * 5, a.getClientInitial().getY() * 5);
                 gc.lineTo(a.getClientFinal().getX() * 5, a.getClientFinal().getY() * 5);
                 gc.stroke();
@@ -229,24 +254,6 @@ public class MainControler {
         });
 
     }
-
-    public void affichageComponent() throws IOException
-    {
-        switch (algobtn.getText()) {
-            case "Tabou":
-                temperatureSlid.setVisible(false);
-                break;
-            case "Recuit":
-                temperatureSlid.setVisible(true);
-                break;
-            case "Selectionner un algo" :
-                temperatureSlid.setVisible(false);
-                break;
-            default:
-                break;
-        }
-    }
-
 
     private static ArrayList<Client> dataFileToCLientList(String filename) throws IOException {
         ArrayList<Client> clients = new ArrayList<>();
@@ -268,7 +275,8 @@ public class MainControler {
     private static Solution routesCreation(ArrayList<Client> clients, int chargeMax) throws IOException {
         Solution routes = new Solution(new ArrayList<>());
         Random r = new Random();
-        int nbVille = r.nextInt(4) + 3;;
+        int nbVille = r.nextInt(4) + 3;
+        ;
         Client depot = clients.get(0);
         clients.remove(0);
         int nbRoute = 0;
@@ -280,7 +288,7 @@ public class MainControler {
             chargeActuelle = chargeActuelle + clientActuel.getQuantite();
             route.addArrete(new Arrete(depot, clientActuel));
             clients.remove(i);
-            while (chargeActuelle < chargeMax && clients.size() > 1 && route.getArretes().size() < nbVille ) {
+            while (chargeActuelle < chargeMax && clients.size() > 1 && route.getArretes().size() < nbVille) {
                 i = r.nextInt(clients.size());
                 if (chargeActuelle + clients.get(i).getQuantite() <= chargeMax) {
                     route.addArrete(new Arrete(clientActuel, clients.get(i)));
@@ -296,6 +304,14 @@ public class MainControler {
             nbRoute++;
         }
         return routes;
+    }
+
+    private Color generateColor() {
+        double redValue = rand.nextFloat() / 2f + 0.5;
+        double greenValue = rand.nextFloat() / 2f + 0.5;
+        double blueValue = rand.nextFloat() / 2f + 0.5;
+
+        return new Color(redValue, greenValue, blueValue, 1);
     }
 
     public void onExit() {
