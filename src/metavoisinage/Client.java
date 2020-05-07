@@ -50,6 +50,28 @@ public class Client {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Client client = (Client) o;
+
+        if (!id.equals(client.id)) return false;
+        if (!x.equals(client.x)) return false;
+        if (!y.equals(client.y)) return false;
+        return quantite.equals(client.quantite);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + x.hashCode();
+        result = 31 * result + y.hashCode();
+        result = 31 * result + quantite.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Client{" +
                 "id=" + id +

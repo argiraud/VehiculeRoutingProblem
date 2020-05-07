@@ -8,6 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import metavoisinage.*;
 
@@ -65,6 +67,9 @@ public class MainControler {
     @FXML
     MenuItem recuit;
 
+    @FXML
+    Label tpsExecution;
+
     Solution routes;
     List<Color> colors;
 
@@ -72,7 +77,8 @@ public class MainControler {
     Integer temperature = 100;
     Random rand;
     Integer nbVoisins = 10000;
-    Integer nbExecutions = 10;
+    Integer nbExecutions = 100000;
+    Integer tailleList = 31;
 
     @FXML
     public void initialize() throws IOException {
@@ -146,24 +152,26 @@ public class MainControler {
     }
 
     public void executer() {
+        tpsExecution.setText("Tps Execution: Execution en cours...");
+        long startTime = System.nanoTime();
         switch (algobtn.getText()) {
             case "Tabou":
                 Tabou tabou = new Tabou();
                 switch (opvoisbtn.getText()) {
                     case "Cross Exchange between route":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 0, nbVoisins, nbExecutions);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 0, nbVoisins, nbExecutions, tailleList);
                         break;
                     case "Exchange Operator":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 1, nbVoisins, nbExecutions);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 1, nbVoisins, nbExecutions, tailleList);
                         break;
                     case "Cross Exchange inside route":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 2, nbVoisins, nbExecutions);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 2, nbVoisins, nbExecutions, tailleList);
                         break;
                     case "Inverse Points Arretes":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 3, nbVoisins, nbExecutions);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 3, nbVoisins, nbExecutions, tailleList);
                         break;
                     case "Enlever un point":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 4, nbVoisins, nbExecutions);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 4, nbVoisins, nbExecutions, tailleList);
                         break;
                     default:
                         break;
@@ -198,7 +206,19 @@ public class MainControler {
 
         }
 
+        long stopTime = System.nanoTime();
+        double executionTime = (stopTime - startTime) / 1_000_000_000.0;
+        if (executionTime > 60) {
+            executionTime = executionTime / 60;
+            tpsExecution.setText("Temps Execution: " + Math.round(executionTime * 100.0) / 100.0 + " min");
 
+        } else {
+            tpsExecution.setText("Temps Execution: " + Math.round(executionTime * 100.0) / 100.0 + " s");
+        }
+        String bip = "la-cucaracha-horn-sound-effect.mp3";
+        Media hit = new Media(new File(bip).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.play();
         eraseall();
         generateDraw(routes);
         distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));

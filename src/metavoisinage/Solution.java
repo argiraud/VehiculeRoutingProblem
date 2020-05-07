@@ -28,6 +28,21 @@ public class Solution {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Solution solution = (Solution) o;
+
+        return routes.equals(solution.routes);
+    }
+
+    @Override
+    public int hashCode() {
+        return routes.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Solution{" +
                 "routes=" + routes.toString() + "distance=" + getDistanceTotal() +

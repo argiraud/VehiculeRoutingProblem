@@ -90,6 +90,9 @@ public class OperateurVoisinage {
     }
 
     public static Solution crossArreteInsideRoute(Solution routes) {
+        if (!testRoutesSize(routes, 5)) {
+            return null;
+        }
         int c = r.nextInt(routes.getRoutes().size());
         Route route = routes.getRoutes().get(c);
         while (route.getArretes().size() <= 5) {
@@ -191,7 +194,7 @@ public class OperateurVoisinage {
         return routes;
     }
 
-    public static Solution enleverUnPoint(Solution routes, Integer chargeMax){
+    public static Solution enleverUnPoint(Solution routes, Integer chargeMax) {
         int m = r.nextInt(routes.getRoutes().size() - 1);
         while (routes.getRoutes().get(m).getArretes().size() <= 2) {
             m = r.nextInt(routes.getRoutes().size() - 1);
@@ -209,7 +212,7 @@ public class OperateurVoisinage {
         }
         double newChargeRoute2 = route2.getChargeTotal() + route1.getArretes().get(i).getCharge();
 
-        while (newChargeRoute2 > chargeMax){
+        while (newChargeRoute2 > chargeMax) {
             m = r.nextInt(routes.getRoutes().size() - 1);
             while (routes.getRoutes().get(m).getArretes().size() <= 2) {
                 m = r.nextInt(routes.getRoutes().size() - 1);
@@ -230,19 +233,28 @@ public class OperateurVoisinage {
         }
 
         int j = r.nextInt(route2.getArretes().size());
-        while (j < 1 || j > route2.getArretes().size() - 2) {
+        while (j < 1 || j > route2.getArretes().size() - 1) {
             j = r.nextInt(route2.getArretes().size());
         }
 
         Client clientAdeplacer = route1.getArretes().get(i).getClientFinal();
-        route1.getArretes().get(i+1).setClientInitial(route1.getArretes().get(i-1).getClientFinal());
+        route1.getArretes().get(i + 1).setClientInitial(route1.getArretes().get(i - 1).getClientFinal());
         route1.getArretes().remove(i);
-        if (route1.getArretes().size() == 1){
+        if (route1.getArretes().size() == 1) {
             System.out.println("suppression");
             routes.getRoutes().remove(m);
         }
         route2.getArretes().add(j, new Arrete(route2.getArretes().get(j).getClientInitial(), clientAdeplacer));
-        route2.getArretes().get(j+1).setClientInitial(clientAdeplacer);
+        route2.getArretes().get(j + 1).setClientInitial(clientAdeplacer);
         return routes;
+    }
+
+    private static boolean testRoutesSize(Solution routes, int size) {
+        for (Route r : routes.getRoutes()) {
+            if (r.getArretes().size() > size) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -22,35 +22,36 @@
     <children>
         <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnSpan="4" GridPane.rowIndex="0" GridPane.rowSpan="3">
          <children>
-              <Slider fx:id="temperatureSlid" visible="false" layoutX="420" layoutY="42.0" />
-             <TextField fx:id="nbVoisinsField" visible="false" layoutX="260.0" layoutY="30.0" maxWidth="115"/>
-             <TextField fx:id="nbExecutionField" visible="false" layoutX="400.0" layoutY="30.0" maxWidth="115"/>
-             <Label fx:id="nbVoisinsLabel" layoutX="260.0" layoutY="10.0" visible="false" text="Nb voisins" />
-             <Label fx:id="nbExecutionLabel" layoutX="400.0" layoutY="10.0" visible="false" text="Nb executions" />
-             <Label fx:id="temperatureLabel" layoutX="420.0" layoutY="25.0" visible="false" text="Temperature" />
+              <Slider fx:id="temperatureSlid" layoutX="420" layoutY="42.0" visible="false" />
+             <TextField fx:id="nbVoisinsField" layoutX="260.0" layoutY="30.0" maxWidth="115" visible="false" />
+             <TextField fx:id="nbExecutionField" layoutX="400.0" layoutY="30.0" maxWidth="115" visible="false" />
+             <Label fx:id="nbVoisinsLabel" layoutX="260.0" layoutY="10.0" text="Nb voisins" visible="false" />
+             <Label fx:id="nbExecutionLabel" layoutX="400.0" layoutY="10.0" text="Nb executions" visible="false" />
+             <Label fx:id="temperatureLabel" layoutX="420.0" layoutY="25.0" text="Temperature" visible="false" />
               <MenuButton fx:id="algobtn" layoutX="52.0" layoutY="69.0" mnemonicParsing="false" text="Selectionnez un algo">
                   <items>
-                      <MenuItem fx:id="tabou" mnemonicParsing="false" text="Tabou"/>
+                      <MenuItem fx:id="tabou" mnemonicParsing="false" text="Tabou" />
                       <MenuItem fx:id="recuit" mnemonicParsing="false" text="Recuit" />
                   </items>
               </MenuButton>
              <MenuButton fx:id="opvoisbtn" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="217.0" text="Selectionnez un opérateur de voisinage">
                  <items>
-                     <MenuItem mnemonicParsing="false" text="Cross Exchange inside route"/>
+                     <MenuItem mnemonicParsing="false" text="Cross Exchange inside route" />
                      <MenuItem mnemonicParsing="false" text="Cross Exchange between route" />
                      <MenuItem mnemonicParsing="false" text="Exchange Operator" />
                      <MenuItem mnemonicParsing="false" text="Enlever un point" />
                      <MenuItem mnemonicParsing="false" text="Inverse Points Arretes" />
                  </items>
              </MenuButton>
-              <Button layoutX="332.0" layoutY="75.0" onAction="#executer" text="Executer" />
+              <Button layoutX="277.0" layoutY="69.0" onAction="#executer" text="Executer" />
+             <Label fx:id="tpsExecution" layoutX="350.0" layoutY="74.0" text="Temps Execution = 0s" />
          </children></Pane>
         <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="5">
          <children>
               <Button fx:id="charger" layoutX="69.0" layoutY="583.0" onAction="#charger" text="Charger" />
               <Label layoutX="36.0" layoutY="90.0" text="Selectionner un fichier" />
-              <Label fx:id="distance" layoutX="36.0" layoutY="23.0" text="Distance" />
-             <Label fx:id="nbVehicule" layoutX="36.0" layoutY="53.0" text="nbVehicule" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+              <Label fx:id="distance" layoutX="36.0" layoutY="13.0" text="Distance" />
+             <Label fx:id="nbVehicule" layoutX="38.0" layoutY="43.0" text="nbVehicule" GridPane.columnIndex="3" GridPane.rowIndex="1" />
          </children></Pane>
         <Canvas fx:id="canvas" height="500" width="500" GridPane.rowIndex="3" GridPane.rowSpan="2" />
         <ListView fx:id="fichiers" minHeight="400" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2">

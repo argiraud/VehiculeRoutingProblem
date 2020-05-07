@@ -57,6 +57,24 @@ public class Route {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Route route = (Route) o;
+
+        if (!id.equals(route.id)) return false;
+        return arretes.equals(route.arretes);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + arretes.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Route{" +
                 "arretes=" + arretes +

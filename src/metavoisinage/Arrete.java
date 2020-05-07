@@ -39,6 +39,24 @@ public class Arrete {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Arrete arrete = (Arrete) o;
+
+        if (!clientInitial.equals(arrete.clientInitial)) return false;
+        return clientFinal.equals(arrete.clientFinal);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = clientInitial.hashCode();
+        result = 31 * result + clientFinal.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return clientInitial.getId() + " -> " + clientFinal.getId();
     }
