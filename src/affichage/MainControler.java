@@ -1,8 +1,5 @@
 package affichage;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,10 +12,7 @@ import metavoisinage.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainControler {
 
@@ -62,21 +56,29 @@ public class MainControler {
     Label nbExecutionLabel;
 
     @FXML
-    MenuItem tabou;
+    MenuItem tabouItem;
 
     @FXML
-    MenuItem recuit;
+    MenuItem recuitItem;
 
     @FXML
     Label tpsExecution;
 
+    @FXML
+    Label tailleListLabel;
+
+    @FXML
+    TextField tailleListField;
+
     Solution routes;
-    List<Color> colors;
 
     public static final Integer CHARGE_MAX = 100;
+    private static final String DISTANCE_TOTAL_MSG = "Distance Total: ";
+    private static final String NOMBRE_VEHICULE_MSG = "Nombre de véhicule: ";
+
     Integer temperature = 100;
     Random rand;
-    Integer nbVoisins = 10000;
+    Integer nbVoisins = 1000;
     Integer nbExecutions = 100000;
     Integer tailleList = 31;
 
@@ -85,10 +87,8 @@ public class MainControler {
         rand = new Random();
         File repertoire = new File("./Ressources");
         String[] files = repertoire.list();
-        List<String> filesList = new ArrayList<>();
-        for (String file : files) {
-            filesList.add(file);
-        }
+        assert files != null;
+        List<String> filesList = new ArrayList<>(Arrays.asList(files));
         temperatureSlid.setMin(100);
         temperatureSlid.setMax(1000);
         temperatureSlid.setValue(100);
@@ -114,40 +114,47 @@ public class MainControler {
                 nbExecutions = Integer.valueOf(oldValue);
             }
         });
-        temperatureSlid.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                temperature = new_val.intValue();
+        tailleListField.textProperty().addListener((v, oldValue, newValue) -> {
+            try {
+                tailleList = Integer.valueOf(newValue);
+            } catch (Exception e) {
+                tailleList = Integer.valueOf(oldValue);
             }
         });
+        temperatureSlid.valueProperty().addListener((ov, oldVal, newVal) -> temperature = newVal.intValue());
         nbVoisinsField.setText(nbVoisins.toString());
         nbExecutionField.setText(nbExecutions.toString());
+        tailleListField.setText(tailleList.toString());
         algobtn.getItems().forEach(i -> i.setOnAction(a -> algobtn.setText(i.getText())));
         opvoisbtn.getItems().forEach(i -> i.setOnAction(a -> opvoisbtn.setText(i.getText())));
-        routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"), CHARGE_MAX);
-        distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));
-        nbVehicule.setText("Nombre de véhicule: " + String.valueOf(Math.round(routes.getRoutes().size())));
+        routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"));
+        distance.setText(DISTANCE_TOTAL_MSG + Math.round(routes.getDistanceTotal()));
+        nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
 
         generateDraw(routes);
 
-        tabou.setOnAction(event -> {
-            algobtn.setText(tabou.getText());
+        tabouItem.setOnAction(event -> {
+            algobtn.setText(tabouItem.getText());
             temperatureSlid.setVisible(false);
             temperatureLabel.setVisible(false);
             nbExecutionField.setVisible(true);
             nbExecutionLabel.setVisible(true);
             nbVoisinsField.setVisible(true);
             nbVoisinsLabel.setVisible(true);
+            tailleListField.setVisible(true);
+            tailleListLabel.setVisible(true);
         });
 
-        recuit.setOnAction(event -> {
-            algobtn.setText(recuit.getText());
+        recuitItem.setOnAction(event -> {
+            algobtn.setText(recuitItem.getText());
             temperatureSlid.setVisible(true);
             temperatureLabel.setVisible(true);
             nbExecutionField.setVisible(false);
             nbExecutionLabel.setVisible(false);
             nbVoisinsLabel.setVisible(false);
             nbVoisinsField.setVisible(false);
+            tailleListLabel.setVisible(false);
+            tailleListField.setVisible(false);
         });
     }
 
@@ -173,6 +180,9 @@ public class MainControler {
                     case "Enlever un point":
                         routes = tabou.methodeTabou(routes, CHARGE_MAX, 4, nbVoisins, nbExecutions, tailleList);
                         break;
+                    case "Tous les opérateurs":
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, -1, nbVoisins, nbExecutions, tailleList);
+                        break;
                     default:
                         break;
                 }
@@ -196,10 +206,12 @@ public class MainControler {
                     case "Enlever un point":
                         routes = rs.MethodeRecuit(routes, temperature, CHARGE_MAX, 4);
                         break;
+                    case "Tous les opérateurs":
+                        routes = rs.MethodeRecuit(routes, temperature, CHARGE_MAX, -1);
+                        break;
                     default:
                         break;
                 }
-
                 break;
             default:
                 break;
@@ -221,16 +233,16 @@ public class MainControler {
         mediaPlayer.play();
         eraseall();
         generateDraw(routes);
-        distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));
-        nbVehicule.setText("Nombre de véhicule: " + String.valueOf(Math.round(routes.getRoutes().size())));
+        distance.setText(DISTANCE_TOTAL_MSG + Math.round(routes.getDistanceTotal()));
+        nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
 
     }
 
     public void charger() throws IOException {
         MultipleSelectionModel<String> selected = fichiers.getSelectionModel();
-        routes = routesCreation(dataFileToCLientList("Ressources/" + selected.getSelectedItem()), CHARGE_MAX);
-        distance.setText("Distance Total: " + String.valueOf(Math.round(routes.getDistanceTotal())));
-        nbVehicule.setText("Nombre de véhicule: " + String.valueOf(Math.round(routes.getRoutes().size())));
+        routes = routesCreation(dataFileToCLientList("Ressources/" + selected.getSelectedItem()));
+        distance.setText(DISTANCE_TOTAL_MSG + Math.round(routes.getDistanceTotal()));
+        nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
         eraseall();
         generateDraw(routes);
     }
@@ -245,30 +257,29 @@ public class MainControler {
 
     private void generateDraw(Solution solution) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-
         gc.setLineWidth(1.0);
-
         solution.getRoutes().forEach(route -> {
+            Color color = generateColor();
             route.getArretes().forEach(a -> {
                 gc.beginPath();
                 gc.setFill(Color.BLUE);
                 if (a.getClientInitial().getId() == 0) {
                     gc.setFill(Color.RED);
-                    gc.fillOval(a.getClientInitial().getX() * 5, a.getClientInitial().getY() * 5, 10, 10);
+                    gc.fillOval(a.getClientInitial().getX() * 5.0, a.getClientInitial().getY() * 5.0, 10, 10);
                 } else {
                     gc.setFill(Color.BLUE);
-                    gc.fillOval(a.getClientInitial().getX() * 5, a.getClientInitial().getY() * 5, 5, 5);
+                    gc.fillOval(a.getClientInitial().getX() * 5.0, a.getClientInitial().getY() * 5.0, 5, 5);
                 }
                 if (a.getClientFinal().getId() == 0) {
                     gc.setFill(Color.RED);
-                    gc.fillOval(a.getClientFinal().getX() * 5, a.getClientFinal().getY() * 5, 10, 10);
+                    gc.fillOval(a.getClientFinal().getX() * 5.0, a.getClientFinal().getY() * 5.0, 10, 10);
                 } else {
                     gc.setFill(Color.BLUE);
-                    gc.fillOval(a.getClientFinal().getX() * 5, a.getClientFinal().getY() * 5, 5, 5);
+                    gc.fillOval(a.getClientFinal().getX() * 5.0, a.getClientFinal().getY() * 5.0, 5, 5);
                 }
-                gc.setStroke(generateColor());
-                gc.moveTo(a.getClientInitial().getX() * 5, a.getClientInitial().getY() * 5);
-                gc.lineTo(a.getClientFinal().getX() * 5, a.getClientFinal().getY() * 5);
+                gc.setStroke(color);
+                gc.moveTo(a.getClientInitial().getX() * 5.0, a.getClientInitial().getY() * 5.0);
+                gc.lineTo(a.getClientFinal().getX() * 5.0, a.getClientFinal().getY() * 5.0);
                 gc.stroke();
             });
         });
@@ -292,25 +303,23 @@ public class MainControler {
         return clients;
     }
 
-    private static Solution routesCreation(ArrayList<Client> clients, int chargeMax) throws IOException {
-        Solution routes = new Solution(new ArrayList<>());
-        Random r = new Random();
-        int nbVille = r.nextInt(4) + 3;
-        ;
+    private Solution routesCreation(ArrayList<Client> clients) {
+        Solution solution = new Solution(new ArrayList<>());
+        int nbVille = rand.nextInt(4) + 3;
         Client depot = clients.get(0);
         clients.remove(0);
         int nbRoute = 0;
         while (clients.size() > 1) {
             int chargeActuelle = 0;
             Route route = new Route(nbRoute, new ArrayList<>());
-            int i = r.nextInt(clients.size());
+            int i = rand.nextInt(clients.size());
             Client clientActuel = clients.get(i);
             chargeActuelle = chargeActuelle + clientActuel.getQuantite();
             route.addArrete(new Arrete(depot, clientActuel));
             clients.remove(i);
-            while (chargeActuelle < chargeMax && clients.size() > 1 && route.getArretes().size() < nbVille) {
-                i = r.nextInt(clients.size());
-                if (chargeActuelle + clients.get(i).getQuantite() <= chargeMax) {
+            while (chargeActuelle < CHARGE_MAX && clients.size() > 1 && route.getArretes().size() < nbVille) {
+                i = rand.nextInt(clients.size());
+                if (chargeActuelle + clients.get(i).getQuantite() <= CHARGE_MAX) {
                     route.addArrete(new Arrete(clientActuel, clients.get(i)));
                     clientActuel = clients.get(i);
                     chargeActuelle = chargeActuelle + clientActuel.getQuantite();
@@ -320,22 +329,18 @@ public class MainControler {
                 }
             }
             route.addArrete(new Arrete(clientActuel, depot));
-            routes.getRoutes().add(route);
+            solution.getRoutes().add(route);
             nbRoute++;
         }
-        return routes;
+        return solution;
     }
 
     private Color generateColor() {
-        double redValue = rand.nextFloat() / 2f + 0.5;
-        double greenValue = rand.nextFloat() / 2f + 0.5;
+        double redValue = rand.nextFloat();
+        double greenValue = rand.nextFloat();
         double blueValue = rand.nextFloat() / 2f + 0.5;
 
         return new Color(redValue, greenValue, blueValue, 1);
-    }
-
-    public void onExit() {
-        Platform.exit();
     }
 }
 

@@ -6,14 +6,6 @@ public class OperateurVoisinage {
 
     public static final Random r = new Random();
 
-    public OperateurVoisinage() {
-
-    }
-
-    //TODO - faire un operateur qui supprime une route ou ajoute une route
-    //TODO - Erreur poids dans inversePointArretes
-    //TODO - Erreur boucle infini troisème -OK
-
     public static Solution inversePointsArretes(Solution routes) {
         int c = r.nextInt(routes.getRoutes().size());
         Route route = routes.getRoutes().get(c);

@@ -5,8 +5,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class RecuitSimule {
 
-    public RecuitSimule() {
+    private final Random r;
 
+    public RecuitSimule() {
+        r = new Random();
     }
 
     public Solution MethodeRecuit(Solution routesInit, Integer temperature, Integer chargeMax, Integer opVois) {
@@ -14,10 +16,8 @@ public class RecuitSimule {
         Solution precSol = new Solution(routesInit);
         Route routeCour = meilleuresolution.getRoutes().get(0);
         double fitMin = routesInit.getDistanceTotal();
-        //System.out.printf(String.valueOf(fitMin));
         double deltaFit = 0;
         double p;
-        Random r = new Random();
         for (int k = 0; k < temperature; k++) {
             for (int l = 1; l < temperature; l++) {
                 Solution randsolution = genererVoisins(precSol, chargeMax, opVois);
@@ -32,7 +32,7 @@ public class RecuitSimule {
                     }
                 } else {
                     p = ThreadLocalRandom.current().nextDouble(0, 1);
-                    double t =  Math.exp((-deltaFit) / temperature);
+                    double t = Math.exp((-deltaFit) / temperature);
                     if (p < t) {
                         meilleuresolution = randsolution;
                         precSol = randsolution;
@@ -48,34 +48,49 @@ public class RecuitSimule {
     }
 
     private Solution genererVoisins(Solution routes, Integer chargeMax, Integer opVois) {
-        Random r = new Random();
         Solution voisin = null;
         for (int i = 0; i < 100; i++) {
             Solution s = new Solution(routes);
-            int j = opVois;
-            switch (j) {
+            switch (opVois) {
                 case 0:
-                    //System.out.println("crossArreteBetweenRoutes");
                     voisin = OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
                     break;
                 case 1:
-                    //System.out.println("echangePointsBetweenRoutes");
                     voisin = OperateurVoisinage.echangePointsBetweenRoutes(s, chargeMax);
                     break;
                 case 2:
-                //    System.out.println("crossArreteInsideRoute");
                     voisin = OperateurVoisinage.crossArreteInsideRoute(s);
                     break;
                 case 3:
-                    //System.out.println("inversePointsArretes");
                     voisin = OperateurVoisinage.inversePointsArretes(s);
                     break;
                 case 4:
-                    System.out.println("enleverUnPoint");
                     voisin = OperateurVoisinage.enleverUnPoint(s, chargeMax);
+                    break;
+                default:
+                    voisin = lancerUnOperateurAleatoire(s, chargeMax);
+                    break;
             }
         }
         return voisin;
+    }
+
+    private Solution lancerUnOperateurAleatoire(Solution s, int chargeMax) {
+        int j = r.nextInt(5);
+        switch (j) {
+            case 0:
+                return OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
+            case 1:
+                return OperateurVoisinage.echangePointsBetweenRoutes(s, chargeMax);
+            case 2:
+                return OperateurVoisinage.crossArreteInsideRoute(s);
+            case 3:
+                return OperateurVoisinage.inversePointsArretes(s);
+            case 4:
+                return OperateurVoisinage.enleverUnPoint(s, chargeMax);
+            default:
+                return s;
+        }
     }
 
 }

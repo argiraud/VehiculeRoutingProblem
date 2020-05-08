@@ -1,63 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="affichage.MainControler">
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="affichage.MainControler">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="250.0" prefHeight="250.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="250.0" prefHeight="250.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="250.0" prefHeight="250.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="250.0" prefHeight="250.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <children>
-        <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnSpan="4" GridPane.rowIndex="0" GridPane.rowSpan="3">
-         <children>
-              <Slider fx:id="temperatureSlid" layoutX="420" layoutY="42.0" visible="false" />
-             <TextField fx:id="nbVoisinsField" layoutX="260.0" layoutY="30.0" maxWidth="115" visible="false" />
-             <TextField fx:id="nbExecutionField" layoutX="400.0" layoutY="30.0" maxWidth="115" visible="false" />
-             <Label fx:id="nbVoisinsLabel" layoutX="260.0" layoutY="10.0" text="Nb voisins" visible="false" />
-             <Label fx:id="nbExecutionLabel" layoutX="400.0" layoutY="10.0" text="Nb executions" visible="false" />
-             <Label fx:id="temperatureLabel" layoutX="420.0" layoutY="25.0" text="Temperature" visible="false" />
-              <MenuButton fx:id="algobtn" layoutX="52.0" layoutY="69.0" mnemonicParsing="false" text="Selectionnez un algo">
-                  <items>
-                      <MenuItem fx:id="tabou" mnemonicParsing="false" text="Tabou" />
-                      <MenuItem fx:id="recuit" mnemonicParsing="false" text="Recuit" />
-                  </items>
-              </MenuButton>
-             <MenuButton fx:id="opvoisbtn" layoutX="14.0" layoutY="30.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="217.0" text="Selectionnez un opérateur de voisinage">
-                 <items>
-                     <MenuItem mnemonicParsing="false" text="Cross Exchange inside route" />
-                     <MenuItem mnemonicParsing="false" text="Cross Exchange between route" />
-                     <MenuItem mnemonicParsing="false" text="Exchange Operator" />
-                     <MenuItem mnemonicParsing="false" text="Enlever un point" />
-                     <MenuItem mnemonicParsing="false" text="Inverse Points Arretes" />
-                 </items>
-             </MenuButton>
-              <Button layoutX="277.0" layoutY="69.0" onAction="#executer" text="Executer" />
-             <Label fx:id="tpsExecution" layoutX="350.0" layoutY="74.0" text="Temps Execution = 0s" />
-         </children></Pane>
-        <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="5">
-         <children>
-              <Button fx:id="charger" layoutX="69.0" layoutY="583.0" onAction="#charger" text="Charger" />
-              <Label layoutX="36.0" layoutY="90.0" text="Selectionner un fichier" />
-              <Label fx:id="distance" layoutX="36.0" layoutY="13.0" text="Distance" />
-             <Label fx:id="nbVehicule" layoutX="38.0" layoutY="43.0" text="nbVehicule" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-         </children></Pane>
-        <Canvas fx:id="canvas" height="500" width="500" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-        <ListView fx:id="fichiers" minHeight="400" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
-            <GridPane.margin>
-                <Insets bottom="60.0" left="20.0" right="20.0" top="0" />
-            </GridPane.margin>
-        </ListView>
-    </children>
+    <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnSpan="4" GridPane.rowIndex="0" GridPane.rowSpan="3">
+        <Label fx:id="tailleListLabel" layoutX="280.0" layoutY="82.0" text="Taille Liste:" visible="false"/>
+        <TextField fx:id="tailleListField" layoutX="375.0" layoutY="77.0" maxWidth="115" visible="false"/>
+        <Label fx:id="nbVoisinsLabel" layoutX="280.0" layoutY="10.0" text="Nb voisins:" visible="false"/>
+        <TextField fx:id="nbVoisinsField" layoutX="375.0" layoutY="5.0" maxWidth="115" visible="false"/>
+        <Label fx:id="nbExecutionLabel" layoutX="280.0" layoutY="46.0" text="Nb executions:" visible="false"/>
+        <TextField fx:id="nbExecutionField" layoutX="375.0" layoutY="41.0" maxWidth="115" visible="false"/>
+        <Label fx:id="temperatureLabel" layoutX="360.0" layoutY="30.0" text="Temperature" visible="false"/>
+        <Slider fx:id="temperatureSlid" layoutX="325.0" layoutY="60.0" visible="false"/>
+        <MenuButton fx:id="algobtn" layoutX="26.0" layoutY="12.0" mnemonicParsing="false" text="Selectionnez un algo">
+            <items>
+                <MenuItem fx:id="tabouItem" mnemonicParsing="false" text="Tabou"/>
+                <MenuItem fx:id="recuitItem" mnemonicParsing="false" text="Recuit"/>
+            </items>
+        </MenuButton>
+        <MenuButton fx:id="opvoisbtn" layoutX="26.0" layoutY="44.0" mnemonicParsing="false" prefHeight="25.0"
+                    prefWidth="217.0" text="Selectionnez un opérateur de voisinage">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Cross Exchange inside route"/>
+                <MenuItem mnemonicParsing="false" text="Cross Exchange between route"/>
+                <MenuItem mnemonicParsing="false" text="Exchange Operator"/>
+                <MenuItem mnemonicParsing="false" text="Enlever un point"/>
+                <MenuItem mnemonicParsing="false" text="Inverse Points Arretes"/>
+                <MenuItem mnemonicParsing="false" text="Tous les opérateurs"/>
+            </items>
+        </MenuButton>
+        <Button layoutX="26.0" layoutY="77.0" onAction="#executer" text="Executer"/>
+        <Label fx:id="tpsExecution" layoutX="100.0" layoutY="82.0" text="Temps Execution = 0s"/>
+    </Pane>
+    <Pane style="-fx-background-color: #d2d2d2;" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowIndex="0"
+          GridPane.rowSpan="5">
+        <Button fx:id="charger" layoutX="69.0" layoutY="583.0" onAction="#charger" text="Charger"/>
+        <Label layoutX="36.0" layoutY="90.0" text="Selectionner un fichier"/>
+        <Label fx:id="distance" layoutX="36.0" layoutY="13.0" text="Distance"/>
+        <Label fx:id="nbVehicule" layoutX="38.0" layoutY="43.0" text="nbVehicule" GridPane.columnIndex="3"
+               GridPane.rowIndex="1"/>
+    </Pane>
+    <Canvas fx:id="canvas" height="500" width="500" GridPane.rowIndex="3" GridPane.rowSpan="2"/>
+    <ListView fx:id="fichiers" minHeight="400" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="2">
+        <GridPane.margin>
+            <Insets bottom="60.0" left="20.0" right="20.0"/>
+        </GridPane.margin>
+    </ListView>
 </GridPane>

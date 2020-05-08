@@ -16,7 +16,7 @@ public class Route {
 
     private List<Arrete> arretes;
 
-    public Route(Integer id,List<Arrete> arretes) {
+    public Route(Integer id, List<Arrete> arretes) {
         this.id = id;
         this.arretes = arretes;
     }
@@ -50,10 +50,6 @@ public class Route {
 
     public double getChargeTotal() {
         return arretes.stream().mapToDouble(Arrete::getCharge).sum();
-    }
-
-    public int size() {
-        return this.size();
     }
 
     @Override
