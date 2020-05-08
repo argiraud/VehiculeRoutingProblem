@@ -83,7 +83,7 @@ public class OperateurVoisinage {
 
     public static Solution crossArreteInsideRoute(Solution routes) {
         if (!testRoutesSize(routes, 5)) {
-            return null;
+            return routes;
         }
         int c = r.nextInt(routes.getRoutes().size());
         Route route = routes.getRoutes().get(c);

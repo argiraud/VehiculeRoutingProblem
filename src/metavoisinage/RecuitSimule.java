@@ -14,17 +14,13 @@ public class RecuitSimule {
     public Solution MethodeRecuit(Solution routesInit, Integer temperature, Integer chargeMax, Integer opVois) {
         Solution meilleuresolution = new Solution(routesInit);
         Solution precSol = new Solution(routesInit);
-        Route routeCour = meilleuresolution.getRoutes().get(0);
         double fitMin = routesInit.getDistanceTotal();
-        double deltaFit = 0;
+        double deltaFit;
         double p;
         double mu = 0.4;
-        double n1 = Math.log(-fitMin/(temperature*Math.log(0.01)))/Math.log(mu);
         for (double k = 0; k < 500; k++) {
             for (int l = 0; l < 8000; l++) {
                 Solution randsolution = genererVoisins(precSol, chargeMax, opVois);
-                int j = r.nextInt(randsolution.getRoutes().size());
-
                 deltaFit = randsolution.getDistanceTotal() - precSol.getDistanceTotal();
                 if (deltaFit <= 0) {
                     precSol = randsolution;

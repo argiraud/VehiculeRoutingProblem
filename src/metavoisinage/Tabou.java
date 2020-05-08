@@ -69,7 +69,6 @@ public class Tabou {
                     i--;
                 }
             } else i--;
-            System.out.println(voisins.size());//5522
         }
         return voisins;
     }
