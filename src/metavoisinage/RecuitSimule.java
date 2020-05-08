@@ -18,8 +18,9 @@ public class RecuitSimule {
         double fitMin = routesInit.getDistanceTotal();
         double deltaFit = 0;
         double p;
+        double mu = 0.3;
         for (int k = 0; k < temperature; k++) {
-            for (int l = 1; l < temperature; l++) {
+            for (int l = 1; l < 8000; l++) {
                 Solution randsolution = genererVoisins(precSol, chargeMax, opVois);
                 int j = r.nextInt(randsolution.getRoutes().size());
 
@@ -41,7 +42,10 @@ public class RecuitSimule {
                     }
                 }
             }
-            temperature = (int) (0.9 * temperature); //0.9 correspond au mu
+            temperature = (int) (mu * temperature);
+            if (mu < 0.99){
+                mu = mu + 0.1;
+            }
         }
 
         return meilleuresolution;

@@ -166,19 +166,19 @@ public class MainControler {
                 Tabou tabou = new Tabou();
                 switch (opvoisbtn.getText()) {
                     case "Cross Exchange between route":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 0, nbVoisins, nbExecutions, tailleList);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 0, nbVoisins, nbExecutions);
                         break;
                     case "Exchange Operator":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 1, nbVoisins, nbExecutions, tailleList);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 1, nbVoisins, nbExecutions);
                         break;
                     case "Cross Exchange inside route":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 2, nbVoisins, nbExecutions, tailleList);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 2, nbVoisins, nbExecutions);
                         break;
                     case "Inverse Points Arretes":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 3, nbVoisins, nbExecutions, tailleList);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 3, nbVoisins, nbExecutions);
                         break;
                     case "Enlever un point":
-                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 4, nbVoisins, nbExecutions, tailleList);
+                        routes = tabou.methodeTabou(routes, CHARGE_MAX, 4, nbVoisins, nbExecutions);
                         break;
                     case "Tous les opérateurs":
                         routes = tabou.methodeTabou(routes, CHARGE_MAX, -1, nbVoisins, nbExecutions, tailleList);
