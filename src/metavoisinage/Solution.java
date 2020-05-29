@@ -6,6 +6,10 @@ import java.util.List;
 public class Solution {
     private List<Route> routes;
 
+    public Solution(){
+
+    };
+
     public Solution(List<Route> routes) {
         this.routes = routes;
     }
