@@ -2,9 +2,7 @@ package metapop;
 
 import metavoisinage.Solution;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Croisement {
     //TODO découpage des solutions en 1 point
@@ -39,4 +37,6 @@ public class Croisement {
         return retour;
 
     }
+
+
 }
