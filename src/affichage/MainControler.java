@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import metapop.GeneticAlgorithm;
 import metavoisinage.*;
 
 import java.io.File;
@@ -47,10 +48,16 @@ public class MainControler {
     TextField nbExecutionField;
 
     @FXML
+    TextField nbSolField;
+
+    @FXML
     Label temperatureLabel;
 
     @FXML
     Label nbVoisinsLabel;
+
+    @FXML
+    Label nbSolLabel;
 
     @FXML
     Label nbExecutionLabel;
@@ -60,6 +67,9 @@ public class MainControler {
 
     @FXML
     MenuItem recuitItem;
+
+    @FXML
+    MenuItem geneticItem;
 
     @FXML
     Label tpsExecution;
@@ -81,6 +91,7 @@ public class MainControler {
     Integer nbVoisins = 1000;
     Integer nbExecutions = 100000;
     Integer tailleList = 31;
+    Integer nbSol = 2;
 
     @FXML
     public void initialize() throws IOException {
@@ -121,6 +132,13 @@ public class MainControler {
                 tailleList = Integer.valueOf(oldValue);
             }
         });
+        nbSolField.textProperty().addListener((v, oldValue, newValue) -> {
+            try {
+                nbSol = Integer.valueOf(newValue);
+            } catch (Exception e) {
+                nbSol = Integer.valueOf(oldValue);
+            }
+        });
         temperatureSlid.valueProperty().addListener((ov, oldVal, newVal) -> temperature = newVal.intValue());
         nbVoisinsField.setText(nbVoisins.toString());
         nbExecutionField.setText(nbExecutions.toString());
@@ -130,6 +148,7 @@ public class MainControler {
         routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"));
         distance.setText(DISTANCE_TOTAL_MSG + Math.round(routes.getDistanceTotal()));
         nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
+        nbSolField.setText(nbSol.toString());
 
         generateDraw(routes);
 
@@ -143,6 +162,9 @@ public class MainControler {
             nbVoisinsLabel.setVisible(true);
             tailleListField.setVisible(true);
             tailleListLabel.setVisible(true);
+            opvoisbtn.setVisible(true);
+            nbSolLabel.setVisible(false);
+            nbSolField.setVisible(false);
         });
 
         recuitItem.setOnAction(event -> {
@@ -155,6 +177,24 @@ public class MainControler {
             nbVoisinsField.setVisible(false);
             tailleListLabel.setVisible(false);
             tailleListField.setVisible(false);
+            opvoisbtn.setVisible(true);
+            nbSolLabel.setVisible(false);
+            nbSolField.setVisible(false);
+        });
+
+        geneticItem.setOnAction(event -> {
+            algobtn.setText(geneticItem.getText());
+            temperatureSlid.setVisible(false);
+            temperatureLabel.setVisible(false);
+            nbExecutionField.setVisible(false);
+            nbExecutionLabel.setVisible(false);
+            nbVoisinsLabel.setVisible(false);
+            nbVoisinsField.setVisible(false);
+            tailleListLabel.setVisible(false);
+            tailleListField.setVisible(false);
+            opvoisbtn.setVisible(false);
+            nbSolLabel.setVisible(true);
+            nbSolField.setVisible(true);
         });
     }
 
@@ -212,6 +252,11 @@ public class MainControler {
                     default:
                         break;
                 }
+                break;
+            case "Génétique":
+                GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
+                //TODO générer nbSol solutions
+                routes = geneticAlgorithm.executeGeneticAlgorithm(new ArrayList<>());
                 break;
             default:
                 break;

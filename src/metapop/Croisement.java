@@ -5,9 +5,27 @@ import metavoisinage.Solution;
 import java.util.*;
 
 public class Croisement {
-    //TODO découpage des solutions en 1 point
-    //injecte dans la premiere solution le découpage de la deuxième solution et inversement
-    //TODO coisement en deux points pour plus tard
+
+    public static List<Solution> getSolutionsAfterCrossover(List<Solution> solutionsToCrossover){
+
+        return null;
+    }
+
+    //TODO - diviser les solutions en 2 partie
+    //TODO - On mets la partie gaude de P1 dans P2 et inversement
+    public static List<Solution> crossSolutions(List<Solution> solutions){
+        return solutions;
+    }
+
+    //TODO - On recherche les doublons si doublon il y a on le remplace par un client manquant
+    private static Solution lookForDuplicateClient(Solution P){
+        return null;
+    }
+
+    //TODO - On recrée les deux solutions obtenues à partir des id route de chaque client
+    private static Solution rebuildSolution(Solution P){
+        return null;
+    }
 
     public static List<Solution> Crossover(Solution s1, Solution s2)
     {

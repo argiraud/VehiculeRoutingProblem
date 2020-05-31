@@ -16,8 +16,7 @@ public class Mutation {
         int ind = r.nextInt(sol.size());
         sol.remove(ind);
 
-        Solution nouvSol = new Solution();
-        nouvSol = lancerUnOperateurAleatoire(sol.get(ind), 100);
+        Solution nouvSol = lancerUnOperateurAleatoire(sol.get(ind), 100);
 
         sol.add(nouvSol);
 
