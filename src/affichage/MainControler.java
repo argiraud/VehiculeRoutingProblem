@@ -255,8 +255,7 @@ public class MainControler {
                 break;
             case "Génétique":
                 GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-                //TODO générer nbSol solutions
-                routes = geneticAlgorithm.executeGeneticAlgorithm(new ArrayList<>());
+                routes = geneticAlgorithm.executeGeneticAlgorithm(routes);
                 break;
             default:
                 break;
