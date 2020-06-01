@@ -12,9 +12,8 @@ public class GeneticAlgorithm {
     public GeneticAlgorithm() {
     }
 
-    public Solution executeGeneticAlgorithm(Solution solution) {
-        List<Solution> geneticSol = new ArrayList<>();
-        geneticSol =  generateXSolutions(solution, 8);
+    public Solution executeGeneticAlgorithm(Solution solution, int nbSol) {
+        List<Solution> geneticSol =  generateXSolutions(solution, nbSol);
         System.out.println("Reproduction");
 
         List<Solution> geneticReprod = new ArrayList<>();
@@ -38,7 +37,7 @@ public class GeneticAlgorithm {
 
     private Solution lancerUnOperateurAleatoire(Solution s, int chargeMax) {
         Random r = new Random();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
             int j = r.nextInt(5);
             switch (j) {
                 case 0:
