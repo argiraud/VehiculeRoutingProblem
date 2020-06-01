@@ -29,6 +29,7 @@ public class Reproduction {
             ratios.forEach((solution, ratio) -> {
                 if (rationAlea <= ratio) {
                     choosenSolutions.add(solution);
+                    System.out.println(solution);
                 }
             });
         }
