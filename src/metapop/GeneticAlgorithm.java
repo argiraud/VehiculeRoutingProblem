@@ -26,14 +26,11 @@ public class GeneticAlgorithm {
     private List<Solution> generateXSolutions(Solution solution, Integer nbPop) {
         List<Solution> sol = new ArrayList<>();
         sol.add(solution);
-        System.out.println(solution.toString());
-        Solution precSol = new Solution(solution);
 
         for(int i = 0; i < nbPop - 1; i++)
         {
-            Solution nouvSol = lancerUnOperateurAleatoire(precSol, 100);
+            Solution nouvSol = lancerUnOperateurAleatoire(new Solution(solution), 100);
             sol.add(nouvSol);
-            System.out.println(nouvSol.toString());
         }
 
         return sol;
@@ -41,8 +38,8 @@ public class GeneticAlgorithm {
 
     private Solution lancerUnOperateurAleatoire(Solution s, int chargeMax) {
         Random r = new Random();
-        int j = r.nextInt(5);
         for (int i = 0; i < 10; i++) {
+            int j = r.nextInt(5);
             switch (j) {
                 case 0:
                     return OperateurVoisinage.crossArreteBetweenRoutes(s, chargeMax);
