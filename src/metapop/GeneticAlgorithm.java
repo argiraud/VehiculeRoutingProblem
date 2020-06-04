@@ -1,11 +1,11 @@
 package metapop;
 
+import com.sun.deploy.security.SelectableSecurityManager;
 import metavoisinage.OperateurVoisinage;
 import metavoisinage.Solution;
+import sun.security.x509.OtherName;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GeneticAlgorithm {
 
@@ -13,23 +13,46 @@ public class GeneticAlgorithm {
     }
 
     public Solution executeGeneticAlgorithm(Solution solution, int nbSol) {
-        List<Solution> geneticSol =  generateXSolutions(solution, nbSol);
-        System.out.println("Reproduction");
+        double probaCross = 0.7;
+        Random r = new Random();
+        double j;
 
+        //Initialisation
+        List<Solution> bestSol =  generateXSolutions(solution, nbSol);
+        System.out.println("Reproduction");
         List<Solution> geneticReprod = new ArrayList<>();
-        geneticReprod = Reproduction.getSelectedSolutions(geneticSol);
-        //Mutation.Mutation(Croisement.crossSolutions(Reproduction.getSelectedSolutions(generateXSolutions(solution))));
-        return null;
+
+        for (int i = 0; i < 7; i++) { // a changer avec nbGen
+
+            geneticReprod = Reproduction.getSelectedSolutions(bestSol);
+
+            j = r.nextDouble();
+            if (j < probaCross) {
+                //croisement
+            } else {
+                //mutation
+                Mutation.Mutation(geneticReprod);
+            }
+            bestSol = geneticReprod;
+        }
+
+        Solution bestSolAretourner = new Solution();
+        bestSolAretourner = bestSol.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+                .orElseThrow(NoSuchElementException::new);
+
+        return bestSolAretourner;
     }
 
     private List<Solution> generateXSolutions(Solution solution, Integer nbPop) {
         List<Solution> sol = new ArrayList<>();
         sol.add(solution);
+        System.out.println(solution.toString());
 
         for(int i = 0; i < nbPop - 1; i++)
         {
             Solution nouvSol = lancerUnOperateurAleatoire(new Solution(solution), 100);
             sol.add(nouvSol);
+            System.out.println(nouvSol.toString());
         }
 
         return sol;
@@ -37,7 +60,7 @@ public class GeneticAlgorithm {
 
     private Solution lancerUnOperateurAleatoire(Solution s, int chargeMax) {
         Random r = new Random();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 1000; i++) {
             int j = r.nextInt(5);
             switch (j) {
                 case 0:
