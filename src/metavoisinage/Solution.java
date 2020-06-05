@@ -1,7 +1,9 @@
 package metavoisinage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Solution {
     private List<Route> routes;
@@ -29,6 +31,16 @@ public class Solution {
 
     public double getDistanceTotal() {
         return routes.stream().mapToDouble(Route::getDistanceTotal).sum();
+    }
+
+    public Map<Client,Integer> getAllClients(){
+        Map<Client,Integer> map = new HashMap<> ();
+        routes.forEach(route -> {
+            route.getArretes().forEach(arrete -> {
+                map.put(arrete.getClientFinal(),route.getId());
+            });
+        });
+        return map;
     }
 
     @Override

@@ -27,6 +27,17 @@ public class Route {
         route.getArretes().forEach(a -> arretes.add(new Arrete(a)));
     }
 
+    /*public Route(List<Client> clients) {
+        arretes = new ArrayList<>();
+        for (int i = 0; i < clients.size(); i++) {
+            if (i == clients.size() - 1) {
+                arretes.add(new Arrete(clients.get(i), clients.get(0)));
+            } else {
+                arretes.add(new Arrete(clients.get(i), clients.get(i + 1)));
+            }
+        }
+    }*/
+
     public List<Arrete> getArretes() {
         return arretes;
     }

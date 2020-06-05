@@ -9,11 +9,10 @@ import java.util.Random;
 public class Mutation {
     //TODO Changer un client de tournée aléatoirement
 
-    public static List<Solution> Mutation (List<Solution> sol)
-    {
+    public static List<Solution> Mutation(List<Solution> sol) {
 
         Random r = new Random();
-        int ind = r.nextInt(sol.size());
+        int ind = r.nextInt(sol.size() - 1);
         sol.remove(ind);
 
         Solution nouvSol = lancerUnOperateurAleatoire(sol.get(ind), 100);
