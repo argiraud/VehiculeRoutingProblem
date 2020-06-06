@@ -31,7 +31,6 @@ public class Reproduction {
             for (Map.Entry<Solution, Double> ratio : ratios.entrySet()) {
                 if (rationAlea <= ratio.getValue()) {
                     choosenSolutions.add(ratio.getKey());
-                    System.out.println(ratio.getKey().toString());
                     break;
 
                 }

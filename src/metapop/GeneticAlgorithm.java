@@ -15,8 +15,10 @@ public class GeneticAlgorithm {
 
     public Solution executeGeneticAlgorithm(Solution solution, int nbSol) {
         double probaCross = 0.7;
-        for (int i = 0; i < 100; i++) {
-            List<Solution> solutions = Reproduction.getSelectedSolutions(generateXSolutions(solution, nbSol));
+        List<Solution> solutions = new ArrayList<>();
+        solutions = generateXSolutions(solution, nbSol);
+        for (int i = 0; i < 1000; i++) {
+            solutions = Reproduction.getSelectedSolutions(solutions);
             double j = r.nextDouble();
             if (j < probaCross) {
                 //croisement
@@ -25,9 +27,10 @@ public class GeneticAlgorithm {
                 //mutation
                 Mutation.Mutation(solutions);
             }
-            solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
-                    .orElseThrow(NoSuchElementException::new);
+
         }
+        solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+                .orElseThrow(NoSuchElementException::new);
         return solution;
     }
 

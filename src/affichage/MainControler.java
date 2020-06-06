@@ -48,7 +48,7 @@ public class MainControler {
     TextField nbExecutionField;
 
     @FXML
-    TextField nbSolField;
+    ComboBox nbSolField;
 
     @FXML
     Label temperatureLabel;
@@ -132,11 +132,17 @@ public class MainControler {
                 tailleList = Integer.valueOf(oldValue);
             }
         });
-        nbSolField.textProperty().addListener((v, oldValue, newValue) -> {
+
+        nbSolField.getItems().add("2");
+        nbSolField.getItems().add("4");
+        nbSolField.getItems().add("6");
+        nbSolField.getItems().add("8");
+
+        nbSolField.itemsProperty().addListener((v, oldValue, newValue) -> {
             try {
-                nbSol = Integer.valueOf(newValue);
+                nbSol = Integer.valueOf(newValue.toString());
             } catch (Exception e) {
-                nbSol = Integer.valueOf(oldValue);
+                nbSol = Integer.valueOf(oldValue.toString());
             }
         });
         temperatureSlid.valueProperty().addListener((ov, oldVal, newVal) -> temperature = newVal.intValue());
@@ -148,7 +154,7 @@ public class MainControler {
         routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"));
         distance.setText(DISTANCE_TOTAL_MSG + Math.round(routes.getDistanceTotal()));
         nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
-        nbSolField.setText(nbSol.toString());
+        //nbSolField.setText(nbSol.toString());
 
         generateDraw(routes);
 

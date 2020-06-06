@@ -27,7 +27,8 @@
         <Label fx:id="nbExecutionLabel" layoutX="280.0" layoutY="46.0" text="Nb executions:" visible="false"/>
         <TextField fx:id="nbExecutionField" layoutX="375.0" layoutY="41.0" maxWidth="115" visible="false"/>
         <Label fx:id="nbSolLabel" layoutX="280.0" layoutY="46.0" text="Nb solutions:" visible="false"/>
-        <TextField fx:id="nbSolField" layoutX="375.0" layoutY="41.0" maxWidth="115" visible="false"/>
+        <ComboBox fx:id="nbSolField" layoutX="375.0" layoutY="41.0" maxWidth="115" visible="false"/>
+
         <Label fx:id="temperatureLabel" layoutX="360.0" layoutY="30.0" text="Temperature" visible="false"/>
         <Slider fx:id="temperatureSlid" layoutX="325.0" layoutY="60.0" visible="false"/>
         <MenuButton fx:id="algobtn" layoutX="26.0" layoutY="12.0" mnemonicParsing="false" text="Selectionnez un algo">
