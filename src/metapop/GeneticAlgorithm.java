@@ -13,7 +13,7 @@ public class GeneticAlgorithm {
         r = new Random();
     }
 
-    public Solution executeGeneticAlgorithm(Solution solution, int nbSol) {
+    public Solution executeGeneticAlgorithm(Solution solution, int nbSol, double mutPercent) {
         double probaCross = 0.7;
         List<Solution> solutions = new ArrayList<>();
         solutions = generateXSolutions(solution, nbSol);
@@ -25,7 +25,7 @@ public class GeneticAlgorithm {
                 Croisement.crossSolutions(solutions);
             } else {
                 //mutation
-                //Mutation.Mutation(solutions);
+                Mutation.Mutation(solutions, mutPercent);
             }
 
         }

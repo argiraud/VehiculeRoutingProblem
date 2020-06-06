@@ -36,10 +36,16 @@ public class MainControler {
     Label distance;
 
     @FXML
+    Label mutationLabel;
+
+    @FXML
     javafx.scene.canvas.Canvas canvas;
 
     @FXML
     Slider temperatureSlid;
+
+    @FXML
+    Slider mutationSlid;
 
     @FXML
     TextField nbVoisinsField;
@@ -48,7 +54,7 @@ public class MainControler {
     TextField nbExecutionField;
 
     @FXML
-    ComboBox nbSolField;
+    TextField nbSolField;
 
     @FXML
     Label temperatureLabel;
@@ -87,6 +93,7 @@ public class MainControler {
     private static final String NOMBRE_VEHICULE_MSG = "Nombre de véhicule: ";
 
     Integer temperature = 100;
+    Integer mutation = 0;
     Random rand;
     Integer nbVoisins = 1000;
     Integer nbExecutions = 100000;
@@ -108,6 +115,15 @@ public class MainControler {
         temperatureSlid.setMajorTickUnit(100);
         temperatureSlid.setMinorTickCount(100);
         temperatureSlid.setBlockIncrement(100);
+
+        mutationSlid.setMin(0);
+        mutationSlid.setMax(100);
+        mutationSlid.setValue(0);
+        mutationSlid.setShowTickLabels(true);
+        mutationSlid.setShowTickMarks(true);
+        mutationSlid.setMajorTickUnit(5);
+        mutationSlid.setMinorTickCount(1);
+        mutationSlid.setBlockIncrement(5);
         ObservableList<String> filesObs = FXCollections.observableArrayList();
         filesObs.addAll(filesList);
         fichiers.setItems(filesObs);
@@ -133,28 +149,19 @@ public class MainControler {
             }
         });
 
-        nbSolField.getItems().add("80");
-        nbSolField.getItems().add("100");
-        nbSolField.getItems().add("200");
-        nbSolField.getItems().add("300");
 
-        nbSolField.itemsProperty().addListener((v, oldValue, newValue) -> {
-            try {
-                nbSol = Integer.valueOf(newValue.toString());
-            } catch (Exception e) {
-                nbSol = Integer.valueOf(oldValue.toString());
-            }
-        });
+
         temperatureSlid.valueProperty().addListener((ov, oldVal, newVal) -> temperature = newVal.intValue());
+        mutationSlid.valueProperty().addListener((ov, oldVal, newVal) -> mutation = newVal.intValue());
         nbVoisinsField.setText(nbVoisins.toString());
         nbExecutionField.setText(nbExecutions.toString());
+        nbSolField.setText(nbSol.toString());
         tailleListField.setText(tailleList.toString());
         algobtn.getItems().forEach(i -> i.setOnAction(a -> algobtn.setText(i.getText())));
         opvoisbtn.getItems().forEach(i -> i.setOnAction(a -> opvoisbtn.setText(i.getText())));
         routes = routesCreation(dataFileToCLientList("Ressources/A3205.txt"));
         distance.setText(DISTANCE_TOTAL_MSG + Math.round(routes.getDistanceTotal()));
         nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
-        //nbSolField.setText(nbSol.toString());
 
         generateDraw(routes);
 
@@ -171,6 +178,8 @@ public class MainControler {
             opvoisbtn.setVisible(true);
             nbSolLabel.setVisible(false);
             nbSolField.setVisible(false);
+            mutationLabel.setVisible(false);
+            mutationSlid.setVisible(false);
         });
 
         recuitItem.setOnAction(event -> {
@@ -186,6 +195,8 @@ public class MainControler {
             opvoisbtn.setVisible(true);
             nbSolLabel.setVisible(false);
             nbSolField.setVisible(false);
+            mutationLabel.setVisible(false);
+            mutationSlid.setVisible(false);
         });
 
         geneticItem.setOnAction(event -> {
@@ -201,6 +212,8 @@ public class MainControler {
             opvoisbtn.setVisible(false);
             nbSolLabel.setVisible(true);
             nbSolField.setVisible(true);
+            mutationLabel.setVisible(true);
+            mutationSlid.setVisible(true);
         });
     }
 
@@ -261,7 +274,7 @@ public class MainControler {
                 break;
             case "Génétique":
                 GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol);
+                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol, (mutation/100));
                 break;
             default:
                 break;
