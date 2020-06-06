@@ -15,34 +15,14 @@ public class GeneticAlgorithm {
 
     public Solution executeGeneticAlgorithm(Solution solution, int nbSol, double mutPercent) {
         double probaCross = 0.7;
-        if (solution.getAllClients().size() != 32){
-            solution.getAllClients();
-        }
-        List<Solution> solutions = generateXSolutions(solution, 100);
+        List<Solution> solutions = generateXSolutions(solution, nbSol);
         for (int i = 0; i < 10000; i++) {
-            solutions.forEach(solution1 -> {
-                if (solution1.getAllClients().size() != 32){
-                    solution1.getAllClients();
-                }
-
-            });
             solutions = Reproduction.getSelectedSolutions(solutions);
-            solutions.forEach(solution1 -> {
-                if (solution1.getAllClients().size() != 32){
-                    solution1.getAllClients();
-                }
-
-            });
             double j = r.nextDouble();
             List<Map<Client, Integer>> mapToBuild = new ArrayList<>();
             if (j < probaCross) {
                 //croisement
                 mapToBuild = Croisement.crossSolutions(solutions);
-                mapToBuild.forEach(k-> {
-                    if (k.size() != 32){
-                        System.out.println("probleme");
-                    }
-                });
             } else {
                 //mutation
                 mapToBuild = Mutation.Mutation(solutions, mutPercent);
@@ -59,11 +39,6 @@ public class GeneticAlgorithm {
                 finalSolutions.add(rebuild(clientIntegerMap, nbRoutes));
             });
             solutions.addAll(finalSolutions);
-            solutions.forEach(solution1 -> {
-                if (solution1.getAllClients().size() != 32){
-                    solution1.getAllClients();
-                }
-            });
         }
         solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                 .orElseThrow(NoSuchElementException::new);
@@ -338,9 +313,6 @@ public class GeneticAlgorithm {
             route.addArrete(new Arrete(clientActuel, depot));
             solution.getRoutes().add(route);
             nbRoute++;
-        }
-        if (solution.getAllClients().size() != nbClient){
-            clients.sort(compareById);
         }
         return solution;
     }

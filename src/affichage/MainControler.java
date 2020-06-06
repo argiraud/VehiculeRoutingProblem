@@ -151,7 +151,13 @@ public class MainControler {
                 tailleList = Integer.valueOf(oldValue);
             }
         });
-
+        nbSolField.textProperty().addListener((v, oldValue, newValue) -> {
+            try {
+                nbSol = Integer.valueOf(newValue);
+            } catch (Exception e) {
+                nbSol = Integer.valueOf(oldValue);
+            }
+        });
 
 
         temperatureSlid.valueProperty().addListener((ov, oldVal, newVal) -> temperature = newVal.intValue());
@@ -277,7 +283,7 @@ public class MainControler {
                 break;
             case "Génétique":
                 GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol, (mutation/100));
+                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol, (mutation.doubleValue()/100d));
                 break;
             default:
                 break;
