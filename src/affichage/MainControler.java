@@ -133,10 +133,10 @@ public class MainControler {
             }
         });
 
-        nbSolField.getItems().add("2");
-        nbSolField.getItems().add("4");
-        nbSolField.getItems().add("6");
-        nbSolField.getItems().add("8");
+        nbSolField.getItems().add("80");
+        nbSolField.getItems().add("100");
+        nbSolField.getItems().add("200");
+        nbSolField.getItems().add("300");
 
         nbSolField.itemsProperty().addListener((v, oldValue, newValue) -> {
             try {

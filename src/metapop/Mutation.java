@@ -1,21 +1,32 @@
 package metapop;
 
+import metavoisinage.Client;
 import metavoisinage.OperateurVoisinage;
 import metavoisinage.Solution;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Mutation {
     //TODO Changer un client de tournée aléatoirement
 
-    public static List<Solution> Mutation(List<Solution> sol) {
-
+    public static List<Solution> Mutation(List<Solution> p1, double MutPercent) {
         Random r = new Random();
-        for (int i = 0; i < sol.size(); i ++) {
-            lancerUnOperateurAleatoire(sol.get(i), 100);
+        for (int i = 0; i < p1.size(); i++)
+        {
+            Map<Client, Integer> p1Clients = p1.get(i).getAllClients();
+
+            p1Clients.forEach((k, v) -> {
+                double j = r.nextDouble();
+                if (j < MutPercent){
+
+                }
+            });
         }
-        return sol;
+
+        return p1;
     }
 
 

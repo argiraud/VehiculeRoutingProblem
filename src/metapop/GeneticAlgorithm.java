@@ -25,7 +25,7 @@ public class GeneticAlgorithm {
                 Croisement.crossSolutions(solutions);
             } else {
                 //mutation
-                Mutation.Mutation(solutions);
+                //Mutation.Mutation(solutions);
             }
 
         }
