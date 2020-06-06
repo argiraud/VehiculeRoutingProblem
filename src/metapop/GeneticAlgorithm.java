@@ -18,8 +18,8 @@ public class GeneticAlgorithm {
         if (solution.getAllClients().size() != 32){
             solution.getAllClients();
         }
-        List<Solution> solutions = generateXSolutions(solution, 10);
-        for (int i = 0; i < 100; i++) {
+        List<Solution> solutions = generateXSolutions(solution, 100);
+        for (int i = 0; i < 10000; i++) {
             solutions.forEach(solution1 -> {
                 if (solution1.getAllClients().size() != 32){
                     solution1.getAllClients();
@@ -38,6 +38,11 @@ public class GeneticAlgorithm {
             if (j < probaCross) {
                 //croisement
                 mapToBuild = Croisement.crossSolutions(solutions);
+                mapToBuild.forEach(k-> {
+                    if (k.size() != 32){
+                        System.out.println("probleme");
+                    }
+                });
             } else {
                 //mutation
                 mapToBuild = Mutation.Mutation(solutions, mutPercent);
@@ -51,9 +56,14 @@ public class GeneticAlgorithm {
                         nbRoutes.add(value);
                     }
                 });
-                finalSolutions.add(rebuild(clientIntegerMap, nbRoutes.size()));
+                finalSolutions.add(rebuild(clientIntegerMap, nbRoutes));
             });
             solutions.addAll(finalSolutions);
+            solutions.forEach(solution1 -> {
+                if (solution1.getAllClients().size() != 32){
+                    solution1.getAllClients();
+                }
+            });
         }
         solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                 .orElseThrow(NoSuchElementException::new);
@@ -65,7 +75,7 @@ public class GeneticAlgorithm {
         sol.add(solution);
 
         for (int i = 0; i < nbPop - 1; i++) {
-           /* Solution nouvSol = null;
+            /*Solution nouvSol = null;
             while (nouvSol == null || sol.contains(nouvSol)) {
                 nouvSol = lancerUnOperateurAleatoire(new Solution(solution), 100);
             }
@@ -101,12 +111,12 @@ public class GeneticAlgorithm {
         return s;
     }
 
-    private static Solution rebuildSolution(Map<Client, Integer> clients, Integer nbRoute) {
+    private static Solution rebuildSolution(Map<Client, Integer> clients, List<Integer> nbRoute) {
         List<Route> routes = new ArrayList<>();
         Client depot = clients.entrySet().stream().filter(clientIntegerEntry -> clientIntegerEntry.getKey().getId() == 0).findFirst().get().getKey();
         clients.remove(depot);
         List<Client> clientsSansRoute = new ArrayList<>();
-        for (int i = 0; i < nbRoute; i++) {
+        for (Integer i : nbRoute) {
             int finalI = i;
             List<Client> clientsRoute = new ArrayList<>();
             clients.entrySet().stream().filter(clientIntegerEntry -> clientIntegerEntry.getValue() == finalI).forEach(
@@ -183,12 +193,12 @@ public class GeneticAlgorithm {
         return new Solution(routes);
     }
 
-    private Solution rebuild(Map<Client, Integer> clients, Integer nbRoute) {
+    private Solution rebuild(Map<Client, Integer> clients, List<Integer> nbRoute) {
         List<Route> routes = new ArrayList<>();
         Client depot = clients.entrySet().stream().filter(clientIntegerEntry -> clientIntegerEntry.getKey().getId() == 0).findFirst().get().getKey();
         clients.remove(depot);
         List<Client> clientsSansRoute = new ArrayList<>();
-        for (int i = 0; i < nbRoute; i++) {
+        for (Integer i : nbRoute) {
             int finalI = i;
             List<Client> clientsRoute = new ArrayList<>();
             clients.entrySet().stream().filter(clientIntegerEntry -> clientIntegerEntry.getValue() == finalI).forEach(
@@ -198,7 +208,7 @@ public class GeneticAlgorithm {
             Double sommeTot = sommeTotQttListClient(clientsRoute);
             while (sommeTot > 100) {
                 clientsSansRoute.add(clientsRoute.get(clientsRoute.size() - 1));
-                clientsRoute.remove(clientsRoute.size() - 1);
+                clientsRoute.remove(clientsSansRoute.get(clientsSansRoute.size()-1));
                 sommeTot = sommeTotQttListClient(clientsRoute);
             }
             //Après on construit la route avec la liste des clients dans l'ordre cool
@@ -225,7 +235,10 @@ public class GeneticAlgorithm {
                 });
             });
             clientsSansRoute = clients1;
-            while (!clientsSansRoute.isEmpty()) {
+            if (!clientsSansRoute.isEmpty()){
+                routes.add(buildRouteWithoutDepotAtTheEnd(getClientOrdreDistance(clientsSansRoute,depot), routes.size()));
+            }
+            /*while (!clientsSansRoute.isEmpty()) {
                 int poidRoute = 0;
                 List<Arrete> arretes = new ArrayList<>();
                 for (int j = 0; j < clientsSansRoute.size(); j++) {
@@ -244,11 +257,15 @@ public class GeneticAlgorithm {
                         clientsSansRoute.remove(j);
                     }
                 }
-            }
+            }*/
         }
         routes.forEach(route -> {
             route.addArrete(new Arrete(route.getArretesById(route.getArretes().size() - 1).getClientFinal(), depot));
         });
+        int s = new Solution((routes)).getAllClients().size();
+        if (s !=32){
+            System.out.println("probleme");
+        }
         return new Solution(routes);
     }
 
@@ -321,6 +338,9 @@ public class GeneticAlgorithm {
             route.addArrete(new Arrete(clientActuel, depot));
             solution.getRoutes().add(route);
             nbRoute++;
+        }
+        if (solution.getAllClients().size() != nbClient){
+            clients.sort(compareById);
         }
         return solution;
     }
