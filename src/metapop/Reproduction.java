@@ -11,14 +11,15 @@ public class Reproduction {
     public static List<Solution> getSelectedSolutions(List<Solution> solutionList) {
         int fitnessTotal = solutionList.stream().mapToInt(solution -> (int) solution.getDistanceTotal()).sum();
         Double[] lastRatio = new Double[2];
+        lastRatio[0]= 0D;
         List<Map<Solution, Double>> ratioss = new ArrayList<>();
         solutionList.forEach(solution -> {
             Map<Solution, Double> ratios = new HashMap<>();
-            if (ratios.isEmpty()) {
+            if (ratioss.isEmpty()) {
                 ratios.put(solution, (1D - (solution.getDistanceTotal() / fitnessTotal)));
             } else {
                 ratios.put(solution, (1D - (solution.getDistanceTotal() / fitnessTotal))
-                        + ratios.get(solutionList.get(ratios.size() - 1)));
+                        + lastRatio[0]);
             }
             lastRatio[0] = ratios.get(solution);
             ratioss.add(ratios);

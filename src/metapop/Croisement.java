@@ -14,19 +14,19 @@ public class Croisement {
 
     //TODO - diviser les solutions en 2 partie
     //TODO - On mets la partie gauche de P1 dans P2 et inversement
-    public static List<Solution> crossSolutions(List<Solution> solutions) {
-        List<Solution> crossSolutions = new ArrayList<>();
+    public static List<Map<Client, Integer>> crossSolutions(List<Solution> solutions) {
+        List<Map<Client, Integer>> crossSolutions = new ArrayList<>();
         for (int i = 0; i < solutions.size(); i += 2) {
             crossSolutions.addAll(cross2Solutions(solutions.get(i), solutions.get(i + 1)));
         }
         return crossSolutions;
     }
 
-    private static List<Solution> cross2Solutions(Solution p1, Solution p2) {
-        Map<Client, Integer> p1Clients = p1.getAllClients();
-        Map<Client, Integer> p2Clients = p2.getAllClients();
+    private static List<Map<Client, Integer>> cross2Solutions(Solution p1, Solution p2) {
+        Map<Client, Integer> p1Clients = p1.getAllClientsWithIdRoute();
+        Map<Client, Integer> p2Clients = p2.getAllClientsWithIdRoute();
 
-        Integer pivot = r.nextInt(p1.getAllClients().size());
+        Integer pivot = r.nextInt(p1.getAllClientsWithIdRoute().size());
         Map<Client, Integer> e1 = new HashMap<>();
         Map<Client, Integer> e2 = new HashMap<>();
 
@@ -45,12 +45,7 @@ public class Croisement {
                 e1.put(k, v);
             }
         });
-
-        List<Solution> solutions = new ArrayList<>();
-        solutions.add(rebuildSolution(e1, p1.getRoutes().size()));
-        solutions.add(rebuildSolution(e2, p2.getRoutes().size()));
-        System.out.println(solutions);
-        return solutions;
+        return Arrays.asList(e1, e2);
     }
 
     //TODO - On recrée les deux solutions obtenues à partir des id route de chaque client
@@ -87,11 +82,11 @@ public class Croisement {
         }
         List<Route> copyRoutes = new ArrayList<>(routes);
         routes.forEach(route -> {
-            if (route.getArretes().size()<1){
+            if (route.getArretes().size() < 1) {
                 copyRoutes.remove(route);
             }
         });
-        routes=copyRoutes;
+        routes = copyRoutes;
         if (!clientsSansRoute.isEmpty()) {
             List<Client> clients1 = new ArrayList<>(clientsSansRoute);
             List<Route> finalRoutes = routes;
@@ -128,10 +123,11 @@ public class Croisement {
             }
         }
         routes.forEach(route -> {
-            if (route.getArretes().size() <1){
+            if (route.getArretes().size() < 1) {
                 System.out.println(route);
             }
-            route.addArrete(new Arrete(route.getArretesById(route.getArretes().size() - 1).getClientFinal(), depot));});
+            route.addArrete(new Arrete(route.getArretesById(route.getArretes().size() - 1).getClientFinal(), depot));
+        });
         return new Solution(routes);
     }
 }

@@ -12,11 +12,12 @@ import java.util.Random;
 public class Mutation {
     //TODO Changer un client de tournée aléatoirement
 
-    public static List<Solution> Mutation(List<Solution> p1, double MutPercent) {
+    public static List<Map<Client, Integer>> Mutation(List<Solution> p1, double MutPercent) {
         Random r = new Random();
+        List<Map<Client,Integer>> maps = new ArrayList<>();
         for (int i = 0; i < p1.size(); i++)
         {
-            Map<Client, Integer> p1Clients = p1.get(i).getAllClients();
+            Map<Client, Integer> p1Clients = p1.get(i).getAllClientsWithIdRoute();
             int nbRoutes = p1.get(i).getRoutes().size();
 
             p1Clients.forEach((k, v) -> {
@@ -26,9 +27,10 @@ public class Mutation {
                     v = newRoute;
                 }
             });
+            maps.add(p1Clients);
         }
 
-        return p1;
+        return maps ;
     }
 
 

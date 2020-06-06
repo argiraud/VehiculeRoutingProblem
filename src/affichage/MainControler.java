@@ -376,7 +376,7 @@ public class MainControler {
         Client depot = clients.get(0);
         clients.remove(0);
         int nbRoute = 0;
-        while (clients.size() > 1) {
+        while (!clients.isEmpty()) {
             int chargeActuelle = 0;
             Route route = new Route(nbRoute, new ArrayList<>());
             int i = rand.nextInt(clients.size());
@@ -384,7 +384,7 @@ public class MainControler {
             chargeActuelle = chargeActuelle + clientActuel.getQuantite();
             route.addArrete(new Arrete(depot, clientActuel));
             clients.remove(i);
-            while (chargeActuelle < CHARGE_MAX && clients.size() > 1 && route.getArretes().size() < nbVille) {
+            while (chargeActuelle < CHARGE_MAX && !clients.isEmpty() && route.getArretes().size() < nbVille) {
                 i = rand.nextInt(clients.size());
                 if (chargeActuelle + clients.get(i).getQuantite() <= CHARGE_MAX) {
                     route.addArrete(new Arrete(clientActuel, clients.get(i)));
@@ -399,6 +399,9 @@ public class MainControler {
             solution.getRoutes().add(route);
             nbRoute++;
         }
+        Comparator<Client> compareById = (Client o1, Client o2) -> o1.getId().compareTo(o2.getId());
+        List<Client> clientList = solution.getAllClients();
+        clientList.sort(compareById);
         return solution;
     }
 

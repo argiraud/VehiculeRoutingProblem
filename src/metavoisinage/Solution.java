@@ -8,9 +8,9 @@ import java.util.Map;
 public class Solution {
     private List<Route> routes;
 
-    public Solution(){
+    public Solution() {
 
-    };
+    }
 
     public Solution(List<Route> routes) {
         this.routes = routes;
@@ -33,14 +33,25 @@ public class Solution {
         return routes.stream().mapToDouble(Route::getDistanceTotal).sum();
     }
 
-    public Map<Client,Integer> getAllClients(){
-        Map<Client,Integer> map = new HashMap<> ();
+    public Map<Client, Integer> getAllClientsWithIdRoute() {
+        Map<Client, Integer> map = new HashMap<>();
         routes.forEach(route -> {
             route.getArretes().forEach(arrete -> {
-                map.put(arrete.getClientFinal(),route.getId());
+                map.put(arrete.getClientFinal(), route.getId());
             });
         });
         return map;
+    }
+
+    public List<Client> getAllClients() {
+        List<Client> clients = new ArrayList<>();
+        routes.forEach(route -> {
+            route.getArretes().forEach(arrete -> {
+                if (!clients.contains(arrete.getClientFinal()))
+                    clients.add(arrete.getClientFinal());
+            });
+        });
+        return clients;
     }
 
     @Override
