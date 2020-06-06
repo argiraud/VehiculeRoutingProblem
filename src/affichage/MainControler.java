@@ -12,7 +12,9 @@ import metapop.GeneticAlgorithm;
 import metavoisinage.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class MainControler {
@@ -99,6 +101,7 @@ public class MainControler {
     Integer nbExecutions = 100000;
     Integer tailleList = 31;
     Integer nbSol = 2;
+    String dataName;
 
     @FXML
     public void initialize() throws IOException {
@@ -308,6 +311,7 @@ public class MainControler {
         nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
         eraseall();
         generateDraw(routes);
+        dataName = selected.getSelectedItem().toString();
     }
 
     public void eraseall() {
@@ -404,6 +408,19 @@ public class MainControler {
         double blueValue = rand.nextFloat() / 2f + 0.5;
 
         return new Color(redValue, greenValue, blueValue, 1);
+    }
+
+
+    public void writeGenResult(String s){
+
+        try {
+            PrintWriter writer = new PrintWriter("GenResults\\" + dataName + ".csv");
+            writer.println(s);
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
 
