@@ -12,13 +12,9 @@ public class Mutation {
     public static List<Solution> Mutation(List<Solution> sol) {
 
         Random r = new Random();
-        int ind = r.nextInt(sol.size() - 1);
-        sol.remove(ind);
-
-        Solution nouvSol = lancerUnOperateurAleatoire(sol.get(ind), 100);
-
-        sol.add(nouvSol);
-
+        for (int i = 0; i < sol.size(); i ++) {
+            lancerUnOperateurAleatoire(sol.get(i), 100);
+        }
         return sol;
     }
 
