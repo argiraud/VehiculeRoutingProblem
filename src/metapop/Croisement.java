@@ -85,6 +85,13 @@ public class Croisement {
             }
             routes.add(new Route(i, arretes));
         }
+        List<Route> copyRoutes = new ArrayList<>(routes);
+        routes.forEach(route -> {
+            if (route.getArretes().size()<1){
+                copyRoutes.remove(route);
+            }
+        });
+        routes=copyRoutes;
         if (!clientsSansRoute.isEmpty()) {
             List<Client> clients1 = new ArrayList<>(clientsSansRoute);
             List<Route> finalRoutes = routes;
@@ -120,13 +127,6 @@ public class Croisement {
                 }
             }
         }
-        List<Route> copyRoutes = new ArrayList<>(routes);
-        routes.forEach(route -> {
-            if (route.getArretes().size()<1){
-                copyRoutes.remove(route);
-            }
-        });
-        routes=copyRoutes;
         routes.forEach(route -> {
             if (route.getArretes().size() <1){
                 System.out.println(route);
