@@ -12,9 +12,7 @@ import metapop.GeneticAlgorithm;
 import metavoisinage.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
 public class MainControler {
@@ -101,7 +99,7 @@ public class MainControler {
     Integer nbExecutions = 100000;
     Integer tailleList = 31;
     Integer nbSol = 2;
-    String dataName;
+    private String dataName;
 
     @FXML
     public void initialize() throws IOException {
@@ -283,7 +281,7 @@ public class MainControler {
                 break;
             case "Génétique":
                 GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol, (mutation.doubleValue()/100d));
+                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol, (mutation.doubleValue()/100d), dataName);
                 break;
             default:
                 break;
@@ -317,7 +315,8 @@ public class MainControler {
         nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
         eraseall();
         generateDraw(routes);
-        dataName = selected.getSelectedItem().toString();
+        dataName = selected.getSelectedItem().toString().substring(0,5);
+        System.out.println(dataName);
     }
 
     public void eraseall() {
@@ -420,16 +419,12 @@ public class MainControler {
     }
 
 
-    public void writeGenResult(String s){
+    public String getDataName() {
+        return dataName;
+    }
 
-        try {
-            PrintWriter writer = new PrintWriter("GenResults\\" + dataName + ".csv");
-            writer.println(s);
-            writer.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void setDataName(String dataName) {
+        this.dataName = dataName;
     }
 }
 

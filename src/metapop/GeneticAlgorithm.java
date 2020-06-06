@@ -1,7 +1,10 @@
 package metapop;
 
+import affichage.MainControler;
 import metavoisinage.*;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -13,35 +16,53 @@ public class GeneticAlgorithm {
         r = new Random();
     }
 
-    public Solution executeGeneticAlgorithm(Solution solution, int nbSol, double mutPercent) {
+    public Solution executeGeneticAlgorithm(Solution solution, int nbSol, double mutPercent, String dataName) {
+        String fileContent = "Data; nombre client; nb generation; taille population; taux mutation; fin cout; temps\r\n";
         double probaCross = 0.7;
-        List<Solution> solutions = generateXSolutions(solution, nbSol);
-        for (int i = 0; i < 10000; i++) {
-            solutions = Reproduction.getSelectedSolutions(solutions);
-            double j = r.nextDouble();
-            List<Map<Client, Integer>> mapToBuild = new ArrayList<>();
-            if (j < probaCross) {
-                //croisement
-                mapToBuild = Croisement.crossSolutions(solutions);
-            } else {
-                //mutation
-                mapToBuild = Mutation.Mutation(solutions, mutPercent);
-            }
-            solutions.clear();
-            List<Solution> finalSolutions = new ArrayList<>();
-            mapToBuild.forEach(clientIntegerMap -> {
-                List<Integer> nbRoutes = new ArrayList<>();
-                clientIntegerMap.forEach((key, value) -> {
-                    if (!nbRoutes.contains(value)) {
-                        nbRoutes.add(value);
+        int nbGen = 0;
+        for (int gen = 1000; gen <= 100000; gen *= 10){
+            System.out.println(gen);
+            for (int pop = 20; pop <= 300; pop += 20){
+                    for (int mut = 5; mut <= 25; mut += 5){
+
+                    long startTime = System.nanoTime();
+                    List<Solution> solutions = generateXSolutions(solution, nbSol);
+                    for (int i = 0; i <= gen; i++) {
+                        nbGen = i;
+                        solutions = Reproduction.getSelectedSolutions(solutions);
+                        double j = r.nextDouble();
+                        List<Map<Client, Integer>> mapToBuild = new ArrayList<>();
+                        if (j < probaCross) {
+                            //croisement
+                            mapToBuild = Croisement.crossSolutions(solutions);
+                        } else {
+                            //mutation
+                            mapToBuild = Mutation.Mutation(solutions, mut/100);
+                        }
+                        solutions.clear();
+                        List<Solution> finalSolutions = new ArrayList<>();
+                        mapToBuild.forEach(clientIntegerMap -> {
+                            List<Integer> nbRoutes = new ArrayList<>();
+                            clientIntegerMap.forEach((key, value) -> {
+                                if (!nbRoutes.contains(value)) {
+                                    nbRoutes.add(value);
+                                }
+                            });
+                            finalSolutions.add(rebuild(clientIntegerMap, nbRoutes));
+                        });
+                        solutions.addAll(finalSolutions);
                     }
-                });
-                finalSolutions.add(rebuild(clientIntegerMap, nbRoutes));
-            });
-            solutions.addAll(finalSolutions);
+                    solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+                            .orElseThrow(NoSuchElementException::new);
+                    long stopTime = System.nanoTime();
+                    double executionTime = (stopTime - startTime) / 1_000_000_000.0;
+                    double muta = (double)mut/100;
+                    fileContent += dataName + "; " + solution.getAllClients().size() +"; " + nbGen + "; " + pop +"; " + muta + "; " + solution.getDistanceTotal() + "; " + executionTime +"\r\n";
+                    }
+
+            }
         }
-        solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
-                .orElseThrow(NoSuchElementException::new);
+        writeGenResult(fileContent, dataName);
         return solution;
     }
 
@@ -165,6 +186,8 @@ public class GeneticAlgorithm {
             }
             route.addArrete(new Arrete(route.getArretesById(route.getArretes().size() - 1).getClientFinal(), depot));
         });
+        //Solution sol = new Solution(routes);
+        //System.out.println("Client tot : " + sol.getAllClients().size());
         return new Solution(routes);
     }
 
@@ -238,9 +261,9 @@ public class GeneticAlgorithm {
             route.addArrete(new Arrete(route.getArretesById(route.getArretes().size() - 1).getClientFinal(), depot));
         });
         int s = new Solution((routes)).getAllClients().size();
-        if (s !=32){
-            System.out.println("probleme");
-        }
+        //if (s !=32){
+        //    System.out.println("probleme");
+        //}
         return new Solution(routes);
     }
 
@@ -315,5 +338,18 @@ public class GeneticAlgorithm {
             nbRoute++;
         }
         return solution;
+    }
+
+
+    public void writeGenResult(String s, String dataName){
+
+        try {
+            PrintWriter writer = new PrintWriter("GenResults/" + dataName +".csv");
+            writer.println(s);
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
