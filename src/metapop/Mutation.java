@@ -17,11 +17,13 @@ public class Mutation {
         for (int i = 0; i < p1.size(); i++)
         {
             Map<Client, Integer> p1Clients = p1.get(i).getAllClients();
+            int nbRoutes = p1.get(i).getRoutes().size();
 
             p1Clients.forEach((k, v) -> {
                 double j = r.nextDouble();
                 if (j < MutPercent){
-
+                    int newRoute = r.nextInt(nbRoutes);
+                    v = newRoute;
                 }
             });
         }
