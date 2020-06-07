@@ -108,7 +108,7 @@ public class GeneticAlgorithm {
                     long stopTime = System.nanoTime();
                     double executionTime = (stopTime - startTime) / 1_000_000_000.0;
                     double muta = 0.1;
-                    fileContent += dataName + "; " + solution.getAllClients().size() +"; " + nbGen + "; " + pop +"; " + muta + ";" + solution.getDistanceTotal() + ";" +coutDep+";" + executionTime +"\r\n";
+                    fileContent += dataName + "; " + solution.getAllClients().size() +"; " + nbGen + "; " + pop +"; " + muta + ";" + (int)solution.getDistanceTotal() + ";" +coutDep+";" + executionTime +"\r\n";
 
 
             }
