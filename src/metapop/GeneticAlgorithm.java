@@ -72,13 +72,13 @@ public class GeneticAlgorithm {
         double probaCross = 0.7;
         double coutDep = solution.getDistanceTotal();
         int nbGen = 0;
-        for (int gen = 0; gen <= 9; gen ++){
+        for (int gen = 0; gen <= 9; gen++){
             System.out.println(gen);
             for (int pop = 20; pop <= 200; pop += 20){
 
                     long startTime = System.nanoTime();
-                    List<Solution> solutions = generateXSolutions(solution, nbSol);
-                    for (int i = 0; i <= 1000; i++) {
+                    List<Solution> solutions = generateXSolutions(solution, pop);
+                    for (int i = 0; i <= gen; i++) {
                         nbGen = i;
                         solutions = Reproduction.getSelectedSolutions(solutions);
                         double j = r.nextDouble();
