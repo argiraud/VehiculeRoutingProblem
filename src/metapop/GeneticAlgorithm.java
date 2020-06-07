@@ -72,14 +72,13 @@ public class GeneticAlgorithm {
         double probaCross = 0.7;
         double coutDep = solution.getDistanceTotal();
         int nbGen = 0;
-        for (int nbIter = 0; nbIter < 9; nbIter++) {
+        Solution bestsolution = new Solution(solution);
+        for (int nbIter = 0; nbIter < 10; nbIter++) {
             System.out.println(nbIter);
-            for (int gen = 1000; gen <= 100000; gen *= 10) {
-                System.out.println(gen);
 
                 long startTime = System.nanoTime();
                 List<Solution> solutions = generateXSolutions(solution, 100);
-                for (int i = 0; i <= gen; i++) {
+                for (int i = 0; i <= 10000; i++) {
                     nbGen = i;
                     solutions = Reproduction.getSelectedSolutions(solutions);
                     double j = r.nextDouble();
@@ -89,7 +88,7 @@ public class GeneticAlgorithm {
                         mapToBuild = Croisement.crossSolutions(solutions);
                     } else {
                         //mutation
-                        mapToBuild = Mutation.Mutation(solutions, 0.1);
+                        mapToBuild = Mutation.Mutation(solutions, 0.15);
                     }
                     solutions.clear();
                     List<Solution> finalSolutions = new ArrayList<>();
@@ -104,18 +103,15 @@ public class GeneticAlgorithm {
                     });
                     solutions.addAll(finalSolutions);
                 }
-                solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+                bestsolution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
                         .orElseThrow(NoSuchElementException::new);
                 long stopTime = System.nanoTime();
                 double executionTime = (stopTime - startTime) / 1_000_000_000.0;
                 double muta = 0.1;
-                fileContent += dataName + "; " + solution.getAllClients().size() + "; " + nbGen + "; " + 100 + "; " + muta + ";" + (int) solution.getDistanceTotal() + ";" + coutDep + ";" + executionTime + "\r\n";
-
-
-            }
+                fileContent += dataName + "; " + bestsolution.getAllClients().size() + "; " + nbGen + "; " + 100 + "; " + 0.15 + ";" + (int) bestsolution.getDistanceTotal() + ";" + (int)coutDep + ";" + executionTime + "\r\n";
         }
             writeGenResult(fileContent, dataName);
-            return solution;
+            return bestsolution;
     }
 
     private List<Solution> generateXSolutions(Solution solution, Integer nbPop) {
@@ -396,7 +392,7 @@ public class GeneticAlgorithm {
     public void writeGenResult(String s, String dataName){
 
         try {
-            PrintWriter writer = new PrintWriter("GenResults/" + dataName +"GenParameters.csv");
+            PrintWriter writer = new PrintWriter("GenResults/" + dataName +"test.csv");
             writer.println(s);
             writer.close();
 
