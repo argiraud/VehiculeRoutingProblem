@@ -12,8 +12,6 @@ public class Croisement {
 
     private static final Random r = new Random();
 
-    //TODO - diviser les solutions en 2 partie
-    //TODO - On mets la partie gauche de P1 dans P2 et inversement
     public static List<Map<Client, Integer>> crossSolutions(List<Solution> solutions) {
         List<Map<Client, Integer>> crossSolutions = new ArrayList<>();
         for (int i = 0; i < solutions.size(); i += 2) {
@@ -124,9 +122,6 @@ public class Croisement {
             }
         }
         routes.forEach(route -> {
-            if (route.getArretes().size() < 1) {
-                System.out.println(route);
-            }
             route.addArrete(new Arrete(route.getArretesById(route.getArretes().size() - 1).getClientFinal(), depot));
         });
         return new Solution(routes);

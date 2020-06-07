@@ -10,19 +10,17 @@ import java.util.Map;
 import java.util.Random;
 
 public class Mutation {
-    //TODO Changer un client de tournée aléatoirement
 
     public static List<Map<Client, Integer>> Mutation(List<Solution> p1, double MutPercent) {
         Random r = new Random();
-        List<Map<Client,Integer>> maps = new ArrayList<>();
-        for (int i = 0; i < p1.size(); i++)
-        {
+        List<Map<Client, Integer>> maps = new ArrayList<>();
+        for (int i = 0; i < p1.size(); i++) {
             Map<Client, Integer> p1Clients = p1.get(i).getAllClientsWithIdRoute();
             int nbRoutes = p1.get(i).getRoutes().size();
 
             p1Clients.forEach((k, v) -> {
                 double j = r.nextDouble();
-                if (j < MutPercent){
+                if (j < MutPercent) {
                     int newRoute = r.nextInt(nbRoutes);
                     v = newRoute;
                 }
@@ -30,7 +28,7 @@ public class Mutation {
             maps.add(p1Clients);
         }
 
-        return maps ;
+        return maps;
     }
 
 

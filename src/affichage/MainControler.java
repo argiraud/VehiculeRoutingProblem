@@ -281,7 +281,7 @@ public class MainControler {
                 break;
             case "Génétique":
                 GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol, (mutation.doubleValue()/100d), dataName);
+                routes = geneticAlgorithm.executeGeneticAlgorithm(routes, nbSol, (mutation.doubleValue() / 100d));
                 break;
             default:
                 break;
@@ -315,7 +315,7 @@ public class MainControler {
         nbVehicule.setText(NOMBRE_VEHICULE_MSG + Math.round(routes.getRoutes().size()));
         eraseall();
         generateDraw(routes);
-        dataName = selected.getSelectedItem().toString().substring(0,5);
+        dataName = selected.getSelectedItem().toString().substring(0, 5);
         System.out.println(dataName);
     }
 

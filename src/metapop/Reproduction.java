@@ -11,7 +11,7 @@ public class Reproduction {
     public static List<Solution> getSelectedSolutions(List<Solution> solutionList) {
         int fitnessTotal = solutionList.stream().mapToInt(solution -> (int) solution.getDistanceTotal()).sum();
         Double[] lastRatio = new Double[2];
-        lastRatio[0]= 0D;
+        lastRatio[0] = 0D;
         List<Map<Solution, Double>> ratioss = new ArrayList<>();
         solutionList.forEach(solution -> {
             Map<Solution, Double> ratios = new HashMap<>();
