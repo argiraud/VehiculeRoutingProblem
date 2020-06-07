@@ -16,6 +16,7 @@ public class GeneticAlgorithm {
         r = new Random();
     }
 
+    /**
     public Solution executeGeneticAlgorithm(Solution solution, int nbSol, double mutPercent, String dataName) {
         String fileContent = "Data; nombre client; nb generation; taille population; taux mutation; fin cout; temps\r\n";
         double probaCross = 0.7;
@@ -59,6 +60,56 @@ public class GeneticAlgorithm {
                     double muta = (double)mut/100;
                     fileContent += dataName + "; " + solution.getAllClients().size() +"; " + nbGen + "; " + pop +"; " + muta + "; " + solution.getDistanceTotal() + "; " + executionTime +"\r\n";
                     }
+
+            }
+        }
+        writeGenResult(fileContent, dataName);
+        return solution;
+    }**/
+
+    public Solution executeGeneticAlgorithm(Solution solution, int nbSol, double mutPercent, String dataName) {
+        String fileContent = "Data; nombre client; nb generation; taille population; taux mutation; fin cout; cout dep; temps\r\n";
+        double probaCross = 0.7;
+        double coutDep = solution.getDistanceTotal();
+        int nbGen = 0;
+        for (int gen = 0; gen <= 9; gen ++){
+            System.out.println(gen);
+            for (int pop = 20; pop <= 200; pop += 20){
+
+                    long startTime = System.nanoTime();
+                    List<Solution> solutions = generateXSolutions(solution, nbSol);
+                    for (int i = 0; i <= 1000; i++) {
+                        nbGen = i;
+                        solutions = Reproduction.getSelectedSolutions(solutions);
+                        double j = r.nextDouble();
+                        List<Map<Client, Integer>> mapToBuild = new ArrayList<>();
+                        if (j < probaCross) {
+                            //croisement
+                            mapToBuild = Croisement.crossSolutions(solutions);
+                        } else {
+                            //mutation
+                            mapToBuild = Mutation.Mutation(solutions, 0.1);
+                        }
+                        solutions.clear();
+                        List<Solution> finalSolutions = new ArrayList<>();
+                        mapToBuild.forEach(clientIntegerMap -> {
+                            List<Integer> nbRoutes = new ArrayList<>();
+                            clientIntegerMap.forEach((key, value) -> {
+                                if (!nbRoutes.contains(value)) {
+                                    nbRoutes.add(value);
+                                }
+                            });
+                            finalSolutions.add(rebuild(clientIntegerMap, nbRoutes));
+                        });
+                        solutions.addAll(finalSolutions);
+                    }
+                    solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+                            .orElseThrow(NoSuchElementException::new);
+                    long stopTime = System.nanoTime();
+                    double executionTime = (stopTime - startTime) / 1_000_000_000.0;
+                    double muta = 0.1;
+                    fileContent += dataName + "; " + solution.getAllClients().size() +"; " + nbGen + "; " + pop +"; " + muta + ";" + solution.getDistanceTotal() + ";" +coutDep+";" + executionTime +"\r\n";
+
 
             }
         }
@@ -344,7 +395,7 @@ public class GeneticAlgorithm {
     public void writeGenResult(String s, String dataName){
 
         try {
-            PrintWriter writer = new PrintWriter("GenResults/" + dataName +".csv");
+            PrintWriter writer = new PrintWriter("GenResults/" + dataName +"PopParameters.csv");
             writer.println(s);
             writer.close();
 
