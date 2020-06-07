@@ -72,49 +72,50 @@ public class GeneticAlgorithm {
         double probaCross = 0.7;
         double coutDep = solution.getDistanceTotal();
         int nbGen = 0;
-        for (int gen = 0; gen <= 9; gen++){
-            System.out.println(gen);
-            for (int pop = 20; pop <= 200; pop += 20){
+        for (int nbIter = 0; nbIter < 9; nbIter++) {
+            System.out.println(nbIter);
+            for (int gen = 1000; gen <= 100000; gen *= 10) {
+                System.out.println(gen);
 
-                    long startTime = System.nanoTime();
-                    List<Solution> solutions = generateXSolutions(solution, pop);
-                    for (int i = 0; i <= gen; i++) {
-                        nbGen = i;
-                        solutions = Reproduction.getSelectedSolutions(solutions);
-                        double j = r.nextDouble();
-                        List<Map<Client, Integer>> mapToBuild = new ArrayList<>();
-                        if (j < probaCross) {
-                            //croisement
-                            mapToBuild = Croisement.crossSolutions(solutions);
-                        } else {
-                            //mutation
-                            mapToBuild = Mutation.Mutation(solutions, 0.1);
-                        }
-                        solutions.clear();
-                        List<Solution> finalSolutions = new ArrayList<>();
-                        mapToBuild.forEach(clientIntegerMap -> {
-                            List<Integer> nbRoutes = new ArrayList<>();
-                            clientIntegerMap.forEach((key, value) -> {
-                                if (!nbRoutes.contains(value)) {
-                                    nbRoutes.add(value);
-                                }
-                            });
-                            finalSolutions.add(rebuild(clientIntegerMap, nbRoutes));
-                        });
-                        solutions.addAll(finalSolutions);
+                long startTime = System.nanoTime();
+                List<Solution> solutions = generateXSolutions(solution, 100);
+                for (int i = 0; i <= gen; i++) {
+                    nbGen = i;
+                    solutions = Reproduction.getSelectedSolutions(solutions);
+                    double j = r.nextDouble();
+                    List<Map<Client, Integer>> mapToBuild = new ArrayList<>();
+                    if (j < probaCross) {
+                        //croisement
+                        mapToBuild = Croisement.crossSolutions(solutions);
+                    } else {
+                        //mutation
+                        mapToBuild = Mutation.Mutation(solutions, 0.1);
                     }
-                    solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
-                            .orElseThrow(NoSuchElementException::new);
-                    long stopTime = System.nanoTime();
-                    double executionTime = (stopTime - startTime) / 1_000_000_000.0;
-                    double muta = 0.1;
-                    fileContent += dataName + "; " + solution.getAllClients().size() +"; " + nbGen + "; " + pop +"; " + muta + ";" + (int)solution.getDistanceTotal() + ";" +coutDep+";" + executionTime +"\r\n";
+                    solutions.clear();
+                    List<Solution> finalSolutions = new ArrayList<>();
+                    mapToBuild.forEach(clientIntegerMap -> {
+                        List<Integer> nbRoutes = new ArrayList<>();
+                        clientIntegerMap.forEach((key, value) -> {
+                            if (!nbRoutes.contains(value)) {
+                                nbRoutes.add(value);
+                            }
+                        });
+                        finalSolutions.add(rebuild(clientIntegerMap, nbRoutes));
+                    });
+                    solutions.addAll(finalSolutions);
+                }
+                solution = solutions.stream().min(Comparator.comparing(Solution::getDistanceTotal))
+                        .orElseThrow(NoSuchElementException::new);
+                long stopTime = System.nanoTime();
+                double executionTime = (stopTime - startTime) / 1_000_000_000.0;
+                double muta = 0.1;
+                fileContent += dataName + "; " + solution.getAllClients().size() + "; " + nbGen + "; " + 100 + "; " + muta + ";" + (int) solution.getDistanceTotal() + ";" + coutDep + ";" + executionTime + "\r\n";
 
 
             }
         }
-        writeGenResult(fileContent, dataName);
-        return solution;
+            writeGenResult(fileContent, dataName);
+            return solution;
     }
 
     private List<Solution> generateXSolutions(Solution solution, Integer nbPop) {
@@ -395,7 +396,7 @@ public class GeneticAlgorithm {
     public void writeGenResult(String s, String dataName){
 
         try {
-            PrintWriter writer = new PrintWriter("GenResults/" + dataName +"PopParameters.csv");
+            PrintWriter writer = new PrintWriter("GenResults/" + dataName +"GenParameters.csv");
             writer.println(s);
             writer.close();
 
